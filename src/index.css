@@ -1,0 +1,102 @@
+/* Load Urbanist font using @import declarations */
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+
+/* Load Montserrat font using @import declarations */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+html {
+  min-width: fit-content !important;
+}
+
+/* Use loaded fonts */
+:root {
+  font-family: "Montserrat", "Urbanist", system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* COCOY TODO: Check if the codes below are enough, then remove the 3 above */
+.MuiDrawer-docked .MuiDrawer-paper,
+.MuiDrawer-docked {
+  width: 200px !important;
+}
+
+.MuiButtonBase-root.MuiListItemButton-root.Mui-selected {
+  background: linear-gradient(
+    90deg,
+    rgba(45, 144, 224, 1) 60%,
+    rgba(171, 211, 243, 1) 100%
+  );
+}
+
+.MuiButtonBase-root.MuiListItemButton-root.Mui-selected .MuiSvgIcon-root,
+.MuiButtonBase-root.MuiListItemButton-root.Mui-selected .MuiTypography-root {
+  color: #fff;
+}
+
+.MuiButtonBase-root.MuiListItemButton-root.Mui-selected
+  .MuiListItemIcon-root
+  img {
+  filter: invert(100%) brightness(200%);
+}
+
+.custom-scrollbar {
+  scrollbar-color: lightgrey whitesmoke !important;
+  scrollbar-width: thin !important;
+}
+.custom-scrollbar.dark {
+  scrollbar-color: whitesmoke rgba(0, 0, 0, 0.1) !important;
+}
+.muted-icon {
+  filter: grayscale(0.5) opacity(0.5);
+}
