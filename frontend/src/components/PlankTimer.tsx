@@ -136,7 +136,6 @@ const PlankTimer: React.FC = () => {
     <div className="relative w-full max-w-2xl mx-auto text-center">
       <video ref={videoRef} autoPlay playsInline className="w-full h-auto" />
       <canvas ref={canvasRef} className="absolute top-0 left-0" width={640} height={480} />
-      <h1 className="text-2xl font-bold mt-4">Push-up Count: {count}</h1>
       <h2 className="text-xl mt-2">Plank Time: {plankTime} seconds</h2>
     </div>
   );
