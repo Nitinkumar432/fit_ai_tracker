@@ -5,10 +5,11 @@ const SquatCounter: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [count, setCount] = useState(0);
-  const [isSquatting, setIsSquatting] = useState(false);
+  const positionRef = useRef<"up" | "down" | null>(null); // Prevents stale state
 
   useEffect(() => {
     let landmarker: PoseLandmarker | null = null;
+    let animationFrameId: number;
 
     const setupCamera = async () => {
       try {
@@ -49,7 +50,7 @@ const SquatCounter: React.FC = () => {
 
         const video = videoRef.current;
         if (video.readyState < 2) {
-          requestAnimationFrame(runPoseDetection);
+          animationFrameId = requestAnimationFrame(runPoseDetection);
           return;
         }
 
@@ -60,7 +61,7 @@ const SquatCounter: React.FC = () => {
           drawCanvas(ctx, video, poses.landmarks[0]);
         }
 
-        requestAnimationFrame(runPoseDetection);
+        animationFrameId = requestAnimationFrame(runPoseDetection);
       };
 
       runPoseDetection();
@@ -70,44 +71,38 @@ const SquatCounter: React.FC = () => {
 
     return () => {
       landmarker?.close();
+      cancelAnimationFrame(animationFrameId);
     };
   }, []);
-
-  const calculateAngle = (A: any, B: any, C: any) => {
-    const BAx = A.x - B.x;
-    const BAy = A.y - B.y;
-    const BCx = C.x - B.x;
-    const BCy = C.y - B.y;
-
-    const dotProduct = BAx * BCx + BAy * BCy;
-    const magnitudeBA = Math.sqrt(BAx * BAx + BAy * BAy);
-    const magnitudeBC = Math.sqrt(BCx * BCx + BCy * BCy);
-
-    const angleRad = Math.acos(dotProduct / (magnitudeBA * magnitudeBC));
-    return (angleRad * 180) / Math.PI;
-  };
 
   const detectSquat = (landmarks: any) => {
     const leftHip = landmarks[23];
     const rightHip = landmarks[24];
     const leftKnee = landmarks[25];
     const rightKnee = landmarks[26];
-    const leftAnkle = landmarks[27];
-    const rightAnkle = landmarks[28];
 
-    if (!leftHip || !rightHip || !leftKnee || !rightKnee || !leftAnkle || !rightAnkle) return;
+    if (leftHip && rightHip && leftKnee && rightKnee) {
+      const leftHipY = leftHip.y;
+      const rightHipY = rightHip.y;
+      const leftKneeY = leftKnee.y;
+      const rightKneeY = rightKnee.y;
 
-    const leftKneeAngle = calculateAngle(leftHip, leftKnee, leftAnkle);
-    const rightKneeAngle = calculateAngle(rightHip, rightKnee, rightAnkle);
+      const threshold = 0.07; // Adjust threshold for movement detection
 
-    const squatThreshold = 100;
-    const standThreshold = 160;
+      // Detecting squat down position
+      if (leftKneeY < leftHipY - threshold && rightKneeY < rightHipY - threshold) {
+        if (positionRef.current !== "down") {
+          positionRef.current = "down";
+        }
+      }
 
-    if (leftKneeAngle < squatThreshold && rightKneeAngle < squatThreshold && !isSquatting) {
-      setIsSquatting(true);
-    } else if (leftKneeAngle > standThreshold && rightKneeAngle > standThreshold && isSquatting) {
-      setIsSquatting(false);
-      setCount((prev) => prev + 1);
+      // Detecting squat up position
+      if (leftKneeY > leftHipY + threshold && rightKneeY > rightHipY + threshold) {
+        if (positionRef.current === "down") {
+          setCount((prevCount) => prevCount + 1);
+          positionRef.current = "up";
+        }
+      }
     }
   };
 
@@ -116,15 +111,13 @@ const SquatCounter: React.FC = () => {
     ctx.drawImage(video, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
 
     const drawingUtils = new DrawingUtils(ctx);
-    landmarks.forEach((landmark: any) => {
-      drawingUtils.drawLandmarks([landmark], { color: "blue", radius: 5 });
-    });
+    drawingUtils.drawLandmarks(landmarks, { color: "red", radius: 5 });
   };
 
   return (
     <div className="relative w-full max-w-2xl mx-auto text-center">
       <video ref={videoRef} autoPlay playsInline className="w-full h-auto" />
-      <canvas ref={canvasRef} className="absolute top-0 left-0" />
+      <canvas ref={canvasRef} className="absolute top-0 left-0" width={640} height={480} />
       <h1 className="text-2xl font-bold mt-4">Squat Count: {count}</h1>
     </div>
   );
