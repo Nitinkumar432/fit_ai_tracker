@@ -7,3 +7,12 @@
   background-position: center;
   background-repeat: no-repeat;
 }
+
+
+body, html, #root {
+  background-color: #000000;
+  color: #FFFFFF; /* Optional - ensures text is readable */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}

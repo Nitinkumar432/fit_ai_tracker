@@ -17,6 +17,8 @@ section {
   padding: 1.2rem;
   width: 100%;
   margin: auto;
+  background-color: #121212;
+  color: #ffffff;
 }
 .toolbar-content-wrapper {
   display: flex;
@@ -37,6 +39,7 @@ section {
 }
 #menu a {
   text-decoration: none;
+  color: #ffffff;
 }
 #menu a:hover {
   color: #2d90e0;
@@ -51,7 +54,8 @@ section {
   top: 56px;
   right: 0;
   left: 0;
-  background-color: white;
+  background-color: #1e1e1e;
+  color: #ffffff;
   padding-bottom: 1rem;
 }
 #menu.mobile-menu.active {
@@ -59,9 +63,11 @@ section {
   flex-direction: column;
   justify-content: center;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  background-color: #1e1e1e;
 }
 #menu.mobile-menu.active a {
   padding: 1rem 1.2rem !important;
+  color: #ffffff;
 }
 #app-preview {
   width: 100%;
@@ -73,12 +79,16 @@ section {
   display: "flex";
   flex-direction: "column";
   height: "100%";
+  background-color: #1e1e1e;
+  color: #ffffff;
 }
 .feature-card h5 {
   font-weight: 700;
 }
 #landing-page-content .MuiCard-root {
   transition: all 0.1s ease-out;
+  background-color: #1e1e1e;
+  color: #ffffff;
 }
 #landing-page-content .MuiCard-root:hover {
   transition: all 0.1s ease-in-out;
@@ -128,6 +138,7 @@ section {
 }
 #home:hover #main-app-preview-hover {
   opacity: 100%;
+  background-color: #121212;
 }
 @media screen and (max-width: 600px) {
   #app-preview-container {
@@ -143,7 +154,63 @@ section {
     opacity: 100%;
   }
 }
-
 html {
   scroll-behavior: smooth;
+  background-color: #121212;
+  color: #ffffff;
+}
+body {
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', 'Arial', sans-serif;
+}
+body, html {
+  background-color: #000000;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+section, #home, #landing-page-content, #app-preview-container {
+  background-color: #000000;
+  color: #ffffff;
+}
+/* FINAL OVERRIDE TO REMOVE PINK/BLUE PATCH */
+* {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  border-color: #333333 !important;
+}
+* {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  border-color: #333333 !important;
+}
+button {
+  background: linear-gradient(80deg, #d41169, #2451d8);
+  color: white !important;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: transform 0.2s, background 0.2s; /* Transition for both transform and background */
+  position: relative; /* Ensure button stays on top */
+  display: inline-block; /* Ensure button remains inline */
+  z-index: 1; /* Ensure the button stays above any other elements */
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #ff6ec4, #7873f5); /* Ensure the background is persistent on hover */
+}
+
+button:focus {
+  outline: none; /* Remove focus outline to avoid any unwanted border */
+}
+
+button:active {
+  transform: scale(1); /* Reset scale on active click */
 }

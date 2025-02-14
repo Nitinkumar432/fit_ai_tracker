@@ -52,6 +52,8 @@ import liezelPicture from "/assets/teammembers/liezel.png";
 import normalCheck from "/assets/icon-normal-check.svg";
 import "./Landing.css";
 import ProjectProposal from "/assets/bodybuddy_project_proposal.pdf";
+import { Typewriter } from 'react-simple-typewriter';
+// import Typography from '@mui/material/Typography';
 
 export function Landing() {
   const [emailSendingError, setEmailSendingError] = useState(false);
@@ -423,9 +425,19 @@ export function Landing() {
                   maxWidth: "500px",
                 }}
               >
-                <Typography variant="h2" display="block">
-                  Get fit and healthy from the comfort of home without gym or
-                  trainers.
+                <Typography variant="h4" display="block">
+                  <span style={{ color: 'white' }}>
+                  <Typewriter
+                    words={[
+                      'Get fit and healthy from the comfort of home without gym or trainers.',
+                    ]}
+                      loop={false} // Set true if you want it to keep typing in a loop
+                      cursor
+                      cursorStyle='_'
+                      typeSpeed={50}
+                      deleteSpeed={30}
+                    />
+                  </span>
                 </Typography>
                 <Typography variant="body1" display="block">
                   BodyBuddy is an AI-powered fitness web platform for people who
@@ -1143,7 +1155,7 @@ export function Landing() {
       >
         <Container>
           <Typography variant="body2" color="primary.contrastText">
-            BodyBuddy 2024 &copy; All rights reserved.
+            Fit-Front 2024 &copy; All rights reserved.
           </Typography>
         </Container>
       </Box>

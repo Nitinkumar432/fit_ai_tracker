@@ -68,8 +68,7 @@ export const MainLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, handleSignOut } = useAuth();
-
-  // Session State from Toolpad Core
+  
   const [session, setSession] = useState({
     user: {
       name: "",
@@ -96,14 +95,10 @@ export const MainLayout = () => {
     getUserInfo();
   }, [user]);
 
-  // Use useMediaQuery to define screen width
-  const isMobile = useMediaQuery("(max-width:600px)");
+const isMobile = useMediaQuery("(max-width:600px)");
+const logoSource = isMobile ? bodybuddyLogoMobile : bodybuddyLogoDesktop;
 
-  // Set logo source based on screen size
-  const logoSource = isMobile ? bodybuddyLogoMobile : bodybuddyLogoDesktop;
-
-  // Authentication logic from Toolpad Core
-  const authentication = useMemo(() => {
+const authentication = useMemo(() => {
     return {
       signIn: () => {
         navigate("/dashboard");
@@ -114,8 +109,7 @@ export const MainLayout = () => {
     };
   }, []);
 
-  // Router object that holds the current URL information
-  const router = {
+ const router = {
     pathname: location.pathname,
     searchParams: new URLSearchParams(location.search),
     navigate: (path) => {
@@ -124,11 +118,19 @@ export const MainLayout = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        backgroundColor: "background.default",
+        color: "text.primary",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <AppProvider
         theme={theme}
         branding={{
-          logo: <img src={logoSource} alt="BodyBuddy" />,
+          logo: <img src={logoSource} alt="Fit-Front" />,
           title: "",
         }}
         session={session}
@@ -139,14 +141,14 @@ export const MainLayout = () => {
         <DashboardLayout
           disableCollapsibleSidebar
           slots={{ toolbarActions: Notifications }}
-          sx={{ position: "relative" }}
+          sx={{ position: "relative", backgroundColor: "background.default" }}
         >
-          <Box sx={{ margin: 2, minHeight: "calc(100vh - 180px)" }}>
+          <Box sx={{ margin: 2, flexGrow: 1 }}>
             <Outlet />
           </Box>
           <Footer />
         </DashboardLayout>
       </AppProvider>
-    </>
+    </Box>
   );
 };
