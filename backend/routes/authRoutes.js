@@ -10,7 +10,7 @@ router.post("/register", async (req, res) => {
     console.log("Request Body:", req.body); 
 
     try {
-        const { name, email, password, age, gender, height, weight, fitnessLevel, goal, activityPreferences } = req.body;
+        const { name, email, password, age, gender, height, weight } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ message: "Email and password are required" });
@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ message: "User already exists" });
 
-        user = new User({ name, email, password, age, gender, height, weight, fitnessLevel, goal, activityPreferences });
+        user = new User({ name, email, password, age, gender, height, weight });
         await user.save();
 
         res.status(201).json({ message: "User registered successfully" });
