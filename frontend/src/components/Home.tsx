@@ -112,13 +112,26 @@ export default function Home() {
               </motion.a>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
-              <img src={img1} alt="BodyBuddy App Interface" loading="lazy" />
-            </motion.div>
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative flex justify-center"
+      >
+        <motion.img
+          src={img1}
+          alt="BodyBuddy App Interface"
+          loading="lazy"
+          className=" rounded-2xl"
+          animate={{
+            y: [0, -10, 0], // Only the PNG floats
+          }}
+          transition={{
+            repeat: Infinity,
+            repeatType: "mirror",
+            duration: 3, 
+          }}
+        />
+      </motion.div>
           </div>
         </div>
       </section>
