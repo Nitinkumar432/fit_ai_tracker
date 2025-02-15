@@ -33,9 +33,51 @@ export const SignUp = (props) => {
     }
   }, [user, navigate]);
 
+  // const handleSignUp = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     const { data, error } = await supabase.auth.signUp({
+  //       email,
+  //       password,
+  //       options: {
+  //         data: {
+  //           full_name: name,
+  //         },
+  //       },
+  //     });
+
+  //     if (error) {
+  //       throw error;
+  //     }
+
+  //     const newUser = {
+  //       id: data.user.id,
+  //       name: name,
+  //       picture: data.user_metadata
+  //         ? data.user_metadata.profile_picture_url
+  //         : null,
+  //       birthday: userResponses.birthday,
+  //       gender: userResponses.gender,
+  //       weight: userResponses.weight,
+  //       weight_unit: userResponses.weight_unit,
+  //       settings: userResponses,
+  //       schedule: userResponses.schedule,
+  //     };
+  //     updateUser(newUser.id, newUser).catch((error) => {
+  //       throw error;
+  //     });
+  //   } catch (error) {
+  //     setError(error.message);
+  //     console.error(error);
+  //   }
+  // };
+
+
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+    console.log("Sign Up button clicked"); // Debugging
+  
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -46,11 +88,13 @@ export const SignUp = (props) => {
           },
         },
       });
-
+  
       if (error) {
         throw error;
       }
-
+  
+      console.log("User signed up successfully"); // Debugging
+  
       const newUser = {
         id: data.user.id,
         name: name,
@@ -64,9 +108,7 @@ export const SignUp = (props) => {
         settings: userResponses,
         schedule: userResponses.schedule,
       };
-      updateUser(newUser.id, newUser).catch((error) => {
-        throw error;
-      });
+      await updateUser(newUser.id, newUser);
     } catch (error) {
       setError(error.message);
       console.error(error);

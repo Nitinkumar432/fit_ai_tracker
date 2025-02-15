@@ -2,6 +2,9 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import emailjs from "emailjs-com";
 import theme from "../theme";
+import { useNavigate } from "react-router-dom";
+
+
 import {
   AppBar,
   Toolbar,
@@ -32,7 +35,7 @@ import emailErrorIcon from "/assets/emailErrorIcon.svg";
 import emailSentIcon from "/assets/emailSentIcon.svg";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo from "/assets/bodybuddy.svg";
+import logo from "/assets/bodybuddy_logo_color.svg";
 import AppPreview from "/assets/main-app-preview.png";
 import AppPreviewHover from "/assets/main-app-preview-hover.png";
 import FeaturesImg1 from "/assets/landingpage_features_image_1.png";
@@ -79,8 +82,19 @@ export function Landing() {
   };
   // Scroll handler
   const scrollToSection = (ref) => {
+    
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const handleSignUpClick = () => {
+    console.log("Sign Up button clicked"); // Debugging
+    navigate("/enter");
+  };
+
+  // const handleSignUpClick = () => {
+  //   navigate("/enter");
+  // };
+  
 
   // Track scroll position to update isOnTop state
   useEffect(() => {
@@ -95,67 +109,74 @@ export function Landing() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  const teamMembers = [
-    {
-      name: "Yosuke Hanaoka",
-      picture: yosukePicture,
-      github: "https://github.com/yoshan0921",
-      linkedin: "https://www.linkedin.com/in/yosuke-hanaoka",
-      role: "Project Manager / / Full Stack Developer",
-    },
-    {
-      name: "Vinicius Souza",
-      picture: vinPicture,
-      github: "https://github.com/vinsouza99",
-      linkedin: "https://www.linkedin.com/in/vinicius-abner",
-      role: "Lead Developer / / Full Stack Developer",
-    },
-    ,
-    {
-      name: "Cocoy Suguitan",
-      picture: cocoyPicture,
-      github: "https://github.com/cocoysg",
-      linkedin: "https://www.linkedin.com/in/cocoysg",
-      role: "Frontend Developer",
-    },
-    {
-      name: "Terumasa Mori",
-      picture: teruPicture,
-      github: "https://github.com/terumori1206",
-      linkedin: "https://www.linkedin.com/in/terumori",
-      role: "Frontend Developer",
-    },
-    {
-      name: "Trang Nguyen",
-      picture: taraPicture,
-      linkedin: "https://www.linkedin.com/in/trang-tara",
-      role: "Co-PM / / UI/UX Designer",
-    },
-    {
-      name: "Calvin Tsai",
-      picture: calvinPicture,
-      linkedin: "https://www.linkedin.com/in/tsai-calvin",
-      role: "Lead Designer / / UI/UX Designer",
-    },
-    {
-      name: "Jason Yang",
-      picture: jasonPicture,
-      linkedin: "https://www.linkedin.com/in/jasonyang21656",
-      role: "UI/UX Designer",
-    },
-    {
-      name: "Viola Sun",
-      picture: violaPicture,
-      linkedin: "https://www.linkedin.com/in/viola-sun-catlady",
-      role: "UI/UX Designer",
-    },
-    {
-      name: "Liezel Sagayadoro",
-      picture: liezelPicture,
-      linkedin: "https://www.linkedin.com/in/liezel-sagayadoro",
-      role: "UI/UX Designer",
-    },
-  ];
+
+
+
+
+  // const teamMembers = [
+  //   {
+  //     name: "Yosuke Hanaoka",
+  //     picture: yosukePicture,
+  //     github: "https://github.com/yoshan0921",
+  //     linkedin: "https://www.linkedin.com/in/yosuke-hanaoka",
+  //     role: "Project Manager / / Full Stack Developer",
+  //   },
+  //   {
+  //     name: "Vinicius Souza",
+  //     picture: vinPicture,
+  //     github: "https://github.com/vinsouza99",
+  //     linkedin: "https://www.linkedin.com/in/vinicius-abner",
+  //     role: "Lead Developer / / Full Stack Developer",
+  //   },
+  //   ,
+  //   {
+  //     name: "Cocoy Suguitan",
+  //     picture: cocoyPicture,
+  //     github: "https://github.com/cocoysg",
+  //     linkedin: "https://www.linkedin.com/in/cocoysg",
+  //     role: "Frontend Developer",
+  //   },
+  //   {
+  //     name: "Terumasa Mori",
+  //     picture: teruPicture,
+  //     github: "https://github.com/terumori1206",
+  //     linkedin: "https://www.linkedin.com/in/terumori",
+  //     role: "Frontend Developer",
+  //   },
+  //   {
+  //     name: "Trang Nguyen",
+  //     picture: taraPicture,
+  //     linkedin: "https://www.linkedin.com/in/trang-tara",
+  //     role: "Co-PM / / UI/UX Designer",
+  //   },
+  //   {
+  //     name: "Calvin Tsai",
+  //     picture: calvinPicture,
+  //     linkedin: "https://www.linkedin.com/in/tsai-calvin",
+  //     role: "Lead Designer / / UI/UX Designer",
+  //   },
+  //   {
+  //     name: "Jason Yang",
+  //     picture: jasonPicture,
+  //     linkedin: "https://www.linkedin.com/in/jasonyang21656",
+  //     role: "UI/UX Designer",
+  //   },
+  //   {
+  //     name: "Viola Sun",
+  //     picture: violaPicture,
+  //     linkedin: "https://www.linkedin.com/in/viola-sun-catlady",
+  //     role: "UI/UX Designer",
+  //   },
+  //   {
+  //     name: "Liezel Sagayadoro",
+  //     picture: liezelPicture,
+  //     linkedin: "https://www.linkedin.com/in/liezel-sagayadoro",
+  //     role: "UI/UX Designer",
+  //   },
+  // ];
+
+
+
   const isMobile = useMediaQuery("(max-width:600px)");
   const featuresImgSrc = isMobile ? FeaturesImg2 : FeaturesImg1;
 
@@ -383,17 +404,15 @@ export function Landing() {
               {/* Mobile Menu */}
             </Box>
             <Box>
-              <Link to="/enter">
-                <Button
-                  variant="contained"
-                  sx={{
-                    // textTransform: "uppercase",
-                    "&:hover": { backgroundColor: "primary.dark" },
-                  }}
-                >
-                  Sign Up
-                </Button>
-              </Link>
+            <Button
+        variant="contained"
+        sx={{
+          "&:hover": { backgroundColor: "primary.dark" },
+        }}
+        onClick={handleSignUpClick}
+      >
+        Sign Up
+      </Button>
             </Box>
           </Box>
         </Toolbar>
@@ -440,7 +459,7 @@ export function Landing() {
                   </span>
                 </Typography>
                 <Typography variant="body1" display="block">
-                  BodyBuddy is an AI-powered fitness web platform for people who
+                  Fit-Front is an AI-powered fitness web platform for people who
                   want to exercise in their own homes or on the go, at their own
                   pace.
                 </Typography>
@@ -649,7 +668,7 @@ export function Landing() {
                 fontFamily={"Urbanist"}
                 padding="0 1rem"
               >
-                BodyBuddy offers an{" "}
+                Fit_Front offers an{" "}
                 <span style={{ fontSize: "2.5rem" }}>
                   effective fitness experience
                 </span>{" "}
@@ -965,7 +984,10 @@ export function Landing() {
             </Container>
           </Grid>
         </Box>
-        <Box component="section" id="team" ref={teamRef}>
+
+
+        {/* TEAM SECTION REMOVED */}
+        {/* <Box component="section" id="team" ref={teamRef}>
           <Typography variant="h3">Meet the Team</Typography>
           <Grid
             container
@@ -988,7 +1010,9 @@ export function Landing() {
               ))}
             </Grid>
           </Grid>
-        </Box>
+        </Box> */}
+
+
         <Box component="section" id="contact" ref={contactRef} sx={{ mb: 6 }}>
           <Grid container>
             <Grid
@@ -1010,7 +1034,7 @@ export function Landing() {
                     maxWidth: "450px",
                   }}
                 />
-                <Box
+                {/* <Box
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -1041,7 +1065,9 @@ export function Landing() {
                     />
                     Project Github
                   </Link>
-                </Box>
+                </Box> */}
+
+
               </Box>
             </Grid>
 

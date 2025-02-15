@@ -16,12 +16,10 @@ export const SignIn = (props) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Initialization
   useEffect(() => {
     setPageTitle(props.title);
   }, []);
 
-  // Transition to Dashboard when user authentication is successful
   useEffect(() => {
     if (user) {
       navigate("/dashboard");
@@ -30,34 +28,30 @@ export const SignIn = (props) => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-
       if (error) {
         throw error;
       }
     } catch (error) {
       setError(error.message);
-      console.error("User failed to signed in", error);
     }
   };
+
   return (
-    <Grid container>
-      {/* Left section with image slider */}
+    <Grid container sx={{ backgroundColor: '#000000', color: '#ffffff', minHeight: '100vh' }}>
       <Grid
         size={{ sm: 12, md: 6 }}
         sx={{
-          display: { xs: "none", md: "block" }, // Hide on extra small and small screens, show on medium and above
+          display: { xs: "none", md: "block" },
         }}
       >
         <Onboarding />
       </Grid>
 
-      {/* Right section with sign-in form */}
       <Grid
         size={{ xs: 12, md: 6 }}
         sx={{
@@ -72,39 +66,21 @@ export const SignIn = (props) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            backgroundColor: '#000000',
+            color: '#ffffff',
           }}
         >
           <Box sx={{ margin: "0 auto", textAlign: "center" }}>
-            {/* Logo */}
             <Box sx={{ mb: 1 }}>
               <img src={bodybuddyLogo} alt="BodyBuddy Logo" width={60} />
             </Box>
 
-            {/* Welcome message */}
-            <Typography
-              variant="h4"
-              sx={{
-                width: "60%",
-                lineHeight: 1.2,
-                margin: "0 auto",
-                marginBottom: 2,
-              }}
-            >
-              Welcome back!
-            </Typography>
+            <Typography variant="h4" sx={{ marginBottom: 2 }}>Welcome back!</Typography>
 
-            <Typography component="h1" variant="h3" sx={{ mb: 2 }}>
-              Sign In
-            </Typography>
+            <Typography component="h1" variant="h3" sx={{ mb: 2 }}>Sign In</Typography>
 
-            <Box sx={{ width: {xs: "60%", sm: "50%"}, margin: "0 auto" }}>
-              {/* Email & Password Sign In Form */}
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSignIn}
-                sx={{ mt: 1 }}
-              >
+            <Box sx={{ width: { xs: "80%", sm: "50%" }, margin: "0 auto" }}>
+              <Box component="form" noValidate onSubmit={handleSignIn} sx={{ mt: 1 }}>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -115,8 +91,9 @@ export const SignIn = (props) => {
                   name="email"
                   autoComplete="email"
                   value={email}
-                  sx={{ marginTop: 1 }}
                   onChange={(e) => setEmail(e.target.value)}
+                  InputLabelProps={{ style: { color: '#ffffff' } }}
+                  InputProps={{ style: { color: '#ffffff', borderColor: '#ffffff' } }}
                 />
                 <TextField
                   variant="outlined"
@@ -129,12 +106,22 @@ export const SignIn = (props) => {
                   id="password"
                   autoComplete="current-password"
                   value={password}
-                  sx={{ marginTop: 1 }}
                   onChange={(e) => setPassword(e.target.value)}
+                  InputLabelProps={{ style: { color: '#ffffff' } }}
+                  InputProps={{ style: { color: '#ffffff', borderColor: '#ffffff' } }}
                 />
                 {error && <Typography color="error">{error}</Typography>}
 
-                <Button type="submit" variant="contained" sx={{ mt: 1, mb: 2 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    mt: 1,
+                    mb: 2,
+                    background: 'linear-gradient(80deg, #d41169, #2451d8)',
+                    color: '#ffffff',
+                  }}
+                >
                   Sign In
                 </Button>
               </Box>
@@ -143,36 +130,21 @@ export const SignIn = (props) => {
         </Container>
 
         <Box sx={{ mx: 4 }}>
-          {/* Start Here link */}
           <Typography variant="body2" sx={{ marginBottom: 1 }}>
-            Don&apos;t have an account?{" "}
+            Don&apos;t have an account?{' '}
             <Button
               variant="text"
-              color="primary"
               component={NavLink}
               to="/create-program"
-              sx={{
-                color: "text.primary",
-                fontWeight: 700,
-                margin: "0",
-                padding: "0",
-              }}
-              onClick={() => localStorage.setItem("currentSlide", 0)} // Reset onboarding slide to first slide
+              sx={{ color: '#ffffff', fontWeight: 700 }}
+              onClick={() => localStorage.setItem("currentSlide", 0)}
             >
               Start here
             </Button>
           </Typography>
 
-          {/* Disclaimer */}
-          <Typography
-            variant="body2"
-            sx={{ lineHeight: 1.3, marginLeft: 2, marginRight: 2 }}
-          >
-            BodyBuddy provides general fitness guidance and real-time feedback
-            for form improvement. It is not a substitute for professional
-            medical advice, diagnosis, or treatment. Always consult your
-            physician before starting a new exercise program, especially if you
-            have any pre-existing medical conditions.
+          <Typography variant="body2" sx={{ lineHeight: 1.3, marginLeft: 2, marginRight: 2 }}>
+            BodyBuddy provides general fitness guidance and real-time feedback for form improvement. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult your physician before starting a new exercise program, especially if you have any pre-existing medical conditions.
           </Typography>
         </Box>
       </Grid>

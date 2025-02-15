@@ -1,9 +1,17 @@
+/* #app-logo {
+  width: 10px;
+  height: 10px;
+  /* object-fit:"cover"; 
+} */
+
 #app-logo {
-  max-width: 150px;
-  width: 100%;
-  height: 100%;
-  object-fit: "cover";
+  max-width: 80px; /* Adjust as per your need */
+  max-height: 40px; /* Adjust as per your need */
+  width: auto;
+  height: auto;
+  object-fit: contain; /* Ensures it scales properly */
 }
+
 #landing-page-content {
   display: grid;
   gap: 2rem;
@@ -20,13 +28,22 @@ section {
   background-color: #121212;
   color: #ffffff;
 }
-.toolbar-content-wrapper {
+/* .toolbar-content-wrapper {
   display: flex;
   align-items: center;
   width: 100%;
   gap: 1rem;
   margin: auto;
+} */
+
+header, .toolbar-content-wrapper, #menu {
+  background-color: #000000 !important; /* Or #000000 if you prefer */
+  color: #ffffff !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
+
 @media screen and (min-width: 600px) {
   .toolbar-content-wrapper {
     max-width: 80vw;
@@ -138,7 +155,7 @@ section {
 }
 #home:hover #main-app-preview-hover {
   opacity: 100%;
-  background-color: #121212;
+  background-color: #000000;
 }
 @media screen and (max-width: 600px) {
   #app-preview-container {
@@ -177,40 +194,41 @@ section, #home, #landing-page-content, #app-preview-container {
   color: #ffffff;
 }
 /* FINAL OVERRIDE TO REMOVE PINK/BLUE PATCH */
-* {
+/* * {
   background-color: #000000 !important;
   color: #ffffff !important;
   box-shadow: none !important;
   border-color: #333333 !important;
-}
+} */
+
 * {
-  background-color: #000000 !important;
   color: #ffffff !important;
   box-shadow: none !important;
   border-color: #333333 !important;
 }
-button {
-  background: linear-gradient(80deg, #d41169, #2451d8);
+
+button, button:hover, button:focus, button:active {
+  background: linear-gradient(80deg, #d41169, #2451d8) !important;
   color: white !important;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 5px;
-  transition: transform 0.2s, background 0.2s; /* Transition for both transform and background */
-  position: relative; /* Ensure button stays on top */
-  display: inline-block; /* Ensure button remains inline */
-  z-index: 1; /* Ensure the button stays above any other elements */
+  transition: transform 0.2s;
+  position: relative;
+  display: inline-block;
+  z-index: 1;
 }
 
 button:hover {
   transform: scale(1.05);
-  background: linear-gradient(45deg, #ff6ec4, #7873f5); /* Ensure the background is persistent on hover */
+  background: linear-gradient(45deg, #ff6ec4, #7873f5) !important;
 }
 
 button:focus {
-  outline: none; /* Remove focus outline to avoid any unwanted border */
+  outline: none;
 }
 
 button:active {
-  transform: scale(1); /* Reset scale on active click */
+  transform: scale(1);
 }

@@ -41,26 +41,30 @@ export function AuthProvider({ children }) {
     fetchSession();
 
     // Listener for changes on auth state
-    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data:{subscription} } = supabase.auth.onAuthStateChange(async (event, session) => {
       // JWT token provided by supabase
-      const access_token = session?.access_token;
-
-      if (event === "INITIAL_SESSION") {
-      } else if (event === "SIGNED_IN" && access_token) {
-        setUser(session?.user ?? null);
+      async (event, session) => {
+        console.log("Auth state changed:", event, session); // Debugging
+        if (event === "SIGNED_IN") {
+          setUser(session?.user ?? null);
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
+        }
         setLoading(false);
-      } else if (event === "SIGNED_OUT") {
-        setUser(null);
-      } else if (event === "TOKEN_REFRESHED") {
-        console.log("Access token refreshed");
       }
     });
 
     // Cleanup
     return () => {
-      if (data) data.subscription.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, []);
+  //   return () => {
+  //     if (data) data.subscription.unsubscribe();
+  //   };
+  // }, []);
 
   // Note:
   // This function doesn' work because last_sign_in_at is already update when the user is signed in
