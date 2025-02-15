@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const exercises = [
-  { name: "Jumping Jacks", gif: "YOUR_GIPHY_URL_HERE" },
-  { name: "Plank", gif: "YOUR_GIPHY_URL_HERE" },
-  { name: "Squats", gif: "YOUR_GIPHY_URL_HERE" },
-  { name: "Push-ups", gif: "YOUR_GIPHY_URL_HERE" },
+  { name: "Jumping Jacks", gif: "https://i.pinimg.com/originals/57/cc/e0/57cce0afa73a4b4c9c8c139d08aec588.gif" },
+  { name: "Plank", gif: "https://hips.hearstapps.com/hmg-prod/images/workouts/2016/03/plank-1457045584.gif?crop=1xw:1xh;center,top&resize=1200:*" },
+  { name: "Squats", gif: "https://hips.hearstapps.com/hmg-prod/images/workouts/2016/03/bodyweightsquat-1457041691.gif" },
+  { name: "Push-ups", gif: "https://i.pinimg.com/originals/bc/cc/b3/bcccb362fd9c0f100079d6a0fc3926ec.gif" },
 ];
 
 const MasterMoves = () => {
