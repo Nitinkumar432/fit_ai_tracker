@@ -81,47 +81,64 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="py-12 md:py-16 lg:py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="space-y-6"
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                Get fit and healthy from the{" "}
-                <span className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
-                  comfort of home
-                </span>{" "}
-                without gym or trainers.
-              </h1>
-              <p className="text-lg md:text-xl text-gray-600">
-                BodyBuddy is an AI-powered fitness web platform for people who
-                want to exercise in their own homes or on the go, at their own
-                pace.
-              </p>
-              <motion.a
-                href="/proposal.pdf"
-                download
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="inline-block bg-black text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold hover:bg-gray-800 transition-all"
-              >
-                Download Proposal
-              </motion.a>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
-              <img src={img1} alt="BodyBuddy App Interface" loading="lazy" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
+  <div className="container mx-auto px-4">
+    <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="space-y-6"
+      >
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          Get fit and healthy from the{" "}
+          <span className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
+            comfort of home
+          </span>{" "}
+          without gym or trainers.
+        </h1>
+        <p className="text-lg md:text-xl text-gray-600">
+          BodyBuddy is an AI-powered fitness web platform for people who
+          want to exercise in their own homes or on the go, at their own
+          pace.
+        </p>
+        <motion.a
+          href="/proposal.pdf"
+          download
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="inline-block bg-black text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold hover:bg-gray-800 transition-all"
+        >
+          Download Proposal
+        </motion.a>
+      </motion.div>
+
+      {/* Static Container, Floating Image */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative flex justify-center"
+      >
+        <motion.img
+          src={img1}
+          alt="BodyBuddy App Interface"
+          loading="lazy"
+          className=" rounded-2xl"
+          animate={{
+            y: [0, -10, 0], // Only the PNG floats
+          }}
+          transition={{
+            repeat: Infinity,
+            repeatType: "mirror",
+            duration: 3, 
+          }}
+        />
+      </motion.div>
+    </div>
+  </div>
+</section>
+
+
       
 
 <div className="w-full bg-gradient-to-r from-pink-100 to-blue-100">
