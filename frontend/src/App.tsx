@@ -20,9 +20,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/auth" element={<Signup/>} />
-          
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard/>} />
+            
             <Route path="/pushups" element={<PushupCounter />} />
             <Route path="/shoulder-taps" element={<ShoulderTapCounter />} />
             <Route path="/squats" element={<SquatCounter/>} />
