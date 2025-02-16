@@ -11,7 +11,6 @@ import Signup from "./components/AuthPage";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-
 function App() {
 
   return (
@@ -20,9 +19,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/auth" element={<Signup/>} />
+
           
           {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/dashboard" element={<Dashboard/>} />
+
+          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route element={<ProtectedRoute />}>
+            
+
             <Route path="/pushups" element={<PushupCounter />} />
             <Route path="/shoulder-taps" element={<ShoulderTapCounter />} />
             <Route path="/squats" element={<SquatCounter/>} />
