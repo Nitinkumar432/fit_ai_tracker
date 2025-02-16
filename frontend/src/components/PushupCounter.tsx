@@ -84,35 +84,34 @@ const PushupCounter: React.FC = () => {
   }, [])
 
   const detectPushup = (landmarks: any) => {
-    if (!isRunning) return
-
-    const leftShoulder = landmarks[11]
-    const rightShoulder = landmarks[12]
-    const leftElbow = landmarks[13]
-    const rightElbow = landmarks[14]
+    const leftShoulder = landmarks[11];
+    const rightShoulder = landmarks[12];
+    const leftElbow = landmarks[13];
+    const rightElbow = landmarks[14];
 
     if (leftShoulder && rightShoulder && leftElbow && rightElbow) {
-      const leftShoulderY = leftShoulder.y
-      const rightShoulderY = rightShoulder.y
-      const leftElbowY = leftElbow.y
-      const rightElbowY = rightElbow.y
+      const leftShoulderY = leftShoulder.y;
+      const rightShoulderY = rightShoulder.y;
+      const leftElbowY = leftElbow.y;
+      const rightElbowY = rightElbow.y;
 
-      const threshold = 0.07
+      const threshold = 0.07; // Adjust threshold for movement detection
 
       if (leftElbowY > leftShoulderY + threshold && rightElbowY > rightShoulderY + threshold) {
         if (positionRef.current !== "down") {
-          positionRef.current = "down"
+          positionRef.current = "down";
         }
       }
 
       if (leftElbowY < leftShoulderY - threshold && rightElbowY < rightShoulderY - threshold) {
         if (positionRef.current === "down") {
-          setCount((prevCount) => prevCount + 1)
-          positionRef.current = "up"
+          setCount((prevCount) => prevCount + 1);
+          positionRef.current = "up";
         }
       }
     }
-  }
+  };
+
 
   const drawCanvas = (ctx: CanvasRenderingContext2D, video: HTMLVideoElement, landmarks: any) => {
     ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height)
