@@ -6,29 +6,29 @@ import { Linkedin, Github } from "lucide-react";
 
 const teamMembers = [
     {
-      name: "Yosuke Hanaoka",
+      name: "Pratyush",
       role: "Project Manager / Full Stack Developer",
       image: "/images/yosuke.jpg", // Replace with actual image path
       linkedin: "#",
       github: "#",
     },
     {
-      name: "Vinicius Souza",
+      name: "Nitin",
       role: "Lead Developer / Full Stack Developer",
       image: "/images/vinicius.jpg",
       linkedin: "#",
-      github: "#",
+      github: "#https://github.com/Nitinkumar432",
     },
     {
-      name: "Cocoy Sugitian",
-      role: "Frontend Developer",
+      name: "Omil",
+      role: "Full Stack Developer",
       image: "/images/cocoy.jpg",
       linkedin: "#",
-      github: "#",
+      github: "https://github.com/",
     },
     {
-      name: "Terumasa Mori",
-      role: "Frontend Developer",
+      name: "Nikhar ",
+      role: "Full Stack Developer",
       image: "/images/terumasa.jpg",
       linkedin: "#",
       github: "#",
@@ -101,7 +101,7 @@ export default function Home() {
                 want to exercise in their own homes or on the go, at their own
                 pace.
               </p>
-              <motion.a
+              {/* <motion.a
                 href="/proposal.pdf"
                 download
                 whileHover={{ scale: 1.05 }}
@@ -109,7 +109,7 @@ export default function Home() {
                 className="inline-block bg-black text-white px-6 md:px-8 py-3 md:py-4 rounded-full text-base md:text-lg font-semibold hover:bg-gray-800 transition-all"
               >
                 Download Proposal
-              </motion.a>
+              </motion.a> */}
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
