@@ -69,18 +69,13 @@ export default function Dashboard() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Dashboard</h2>
+    <div className="flex flex-col h-full p-6 bg-black border-r bg-black">
+      <h2 className="text-2xl font-bold text-gray-200 mb-6">Dashboard</h2>
 
       <nav className="flex-1">
         <ul className="space-y-2">
           {sidebarItems.map((item, index) => (
-            <motion.li
-              key={item.text}
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: index * 0.1 }}
-            >
+            <motion.li key={item.text}>
               <button
                 onClick={() => {
                   navigate(item.path)
@@ -90,8 +85,8 @@ export default function Dashboard() {
                 className={`flex items-center w-full px-4 py-3 rounded-lg text-lg transition-all 
                   ${
                     currentPath === item.path
-                      ? "text-blue-600 bg-blue-100 shadow-md"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+                      ? "text-cyan-400 bg-black shadow-md"
+                      : "text-gray-400 hover:bg-gray-800 hover:text-cyan-300"
                   }`}
               >
                 <item.icon className="w-6 h-6 mr-3" />
@@ -103,10 +98,8 @@ export default function Dashboard() {
       </nav>
 
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.98 }}
         onClick={handleLogout}
-        className="flex items-center justify-center gap-2 w-full px-4 py-3 text-white text-lg font-medium bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition-all"
+        className="flex items-center justify-center gap-2 w-full px-4 py-3 text-white text-lg font-medium bg-red-700 rounded-lg hover:bg-red-600 transition-all"
       >
         <LogOut className="w-5 h-5" />
         Log Out
@@ -115,17 +108,15 @@ export default function Dashboard() {
   )
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-200">
+    <div className="flex min-h-screen bg-black from-gray-900 to-gray-800">
       {/* Mobile Menu Button */}
-      <button onClick={toggleSidebar} className="fixed top-4 left-4 z-50 lg:hidden bg-white p-2 rounded-full shadow-md">
-        {sidebarOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
+      <button onClick={toggleSidebar} className="fixed top-4 left-4 z-50 lg:hidden bg-gray-800 p-2 rounded-lg shadow-md">
+        {sidebarOpen ? <X className="w-6 h-6 text-gray-200" /> : <Menu className="w-6 h-6 text-gray-200" />}
       </button>
 
       {/* Sidebar for larger screens */}
       <motion.div
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        className="hidden lg:block fixed left-0 top-0 h-full w-64 bg-white/80 backdrop-blur-lg shadow-xl border-r border-gray-200 z-40"
+        className="hidden lg:block fixed left-0 top-0 h-full w-64 bg-gray-900/90 backdrop-blur-lg shadow-xl border-r border-gray-700 z-40"
       >
         <SidebarContent />
       </motion.div>
@@ -134,20 +125,10 @@ export default function Dashboard() {
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40 lg:hidden"
-            onClick={toggleSidebar}
+            className="fixed inset-0 bg-gray-900/80 z-40 lg:hidden"
           >
             <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="fixed left-0 top-0 h-full w-64 bg-white shadow-xl z-50"
-              onClick={(e) => e.stopPropagation()}
+              className="fixed left-0 top-0 h-full w-64 bg-gray-900 shadow-xl z-50 border-r border-gray-700"
             >
               <SidebarContent />
             </motion.div>
@@ -157,56 +138,28 @@ export default function Dashboard() {
 
       {/* Main Content */}
       <div className="flex-1 transition-all duration-300 lg:ml-64">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-6 md:p-10 max-w-7xl mx-auto"
-        >
+        <motion.div className="p-6 md:p-10 max-w-7xl mx-auto">
           {/* User Card */}
-          <motion.div
-            className="mb-8 bg-white shadow-lg rounded-xl p-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
+          <motion.div className="mb-8 bg-gray-800 shadow-xl rounded-xl p-6">
             <UserLevelCard userProfile={userProfile} />
           </motion.div>
           
           {/* Middle Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <motion.div
-              className="bg-white shadow-lg rounded-xl p-6"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
+            <motion.div className="bg-gray-800 shadow-xl rounded-xl p-6">
               <StreakTracker />
             </motion.div>
-            <motion.div
-              className="bg-white shadow-lg rounded-xl p-6"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
+            <motion.div className="bg-gray-800 shadow-xl rounded-xl p-6">
               <WallOfFame />
             </motion.div>
           </div>
 
           {/* Bottom Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <motion.div
-              className="bg-white shadow-lg rounded-xl p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
+            <motion.div className="bg-gray-800 shadow-xl rounded-xl p-6">
               <MasterMoves />
             </motion.div>
-            <motion.div
-              className="bg-white shadow-lg rounded-xl p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-            >
+            <motion.div className="bg-gray-800 shadow-xl rounded-xl p-6">
               <Record />
             </motion.div>
           </div>

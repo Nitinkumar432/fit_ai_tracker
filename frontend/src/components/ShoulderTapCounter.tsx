@@ -259,7 +259,7 @@ const ShoulderTapCounter: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 p-8">
+    <div className="min-h-screen bg-black p-8">
       <motion.h1
         className="text-4xl font-bold text-blue-600 text-center mb-8"
         initial={{ y: -20, opacity: 0 }}

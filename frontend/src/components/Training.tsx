@@ -40,18 +40,13 @@ export default function Training() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Training</h2>
+    <div className="flex flex-col h-full p-6 bg-black border-r bg-black">
+      <h2 className="text-2xl font-bold text-gray-200 mb-6">Dashboard</h2>
 
       <nav className="flex-1">
         <ul className="space-y-2">
           {sidebarItems.map((item, index) => (
-            <motion.li
-              key={item.text}
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: index * 0.1 }}
-            >
+            <motion.li key={item.text}>
               <button
                 onClick={() => {
                   navigate(item.path)
@@ -61,8 +56,8 @@ export default function Training() {
                 className={`flex items-center w-full px-4 py-3 rounded-lg text-lg transition-all 
                   ${
                     currentPath === item.path
-                      ? "text-blue-600 bg-blue-100 shadow-md"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+                      ? "text-cyan-400 bg-black shadow-md"
+                      : "text-gray-400 hover:bg-gray-800 hover:text-cyan-300"
                   }`}
               >
                 <item.icon className="w-6 h-6 mr-3" />
@@ -74,10 +69,8 @@ export default function Training() {
       </nav>
 
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.98 }}
         onClick={handleLogout}
-        className="flex items-center justify-center gap-2 w-full px-4 py-3 text-white text-lg font-medium bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition-all"
+        className="flex items-center justify-center gap-2 w-full px-4 py-3 text-white text-lg font-medium bg-red-700 rounded-lg hover:bg-red-600 transition-all"
       >
         <LogOut className="w-5 h-5" />
         Log Out
@@ -86,7 +79,7 @@ export default function Training() {
   )
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-gray-200">
+    <div className="flex min-h-screen bg-black from-gray-50 to-gray-200">
       <button onClick={toggleSidebar} className="fixed top-4 left-4 z-50 lg:hidden bg-white p-2 rounded-full shadow-md">
         {sidebarOpen ? <X className="w-6 h-6 text-gray-700" /> : <Menu className="w-6 h-6 text-gray-700" />}
       </button>

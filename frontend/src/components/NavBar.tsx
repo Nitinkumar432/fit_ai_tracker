@@ -39,13 +39,17 @@ const Navbar = () => {
           </span>
         </Link>
 
+        {/* <ul className="flex space-x-6">
+              <li><a href="#" className="hover:text-pink-500">Home</a></li>
+              <li><a href="#features" className="hover:text-pink-500">Features</a></li>
+              <li><a href="#team" className="hover:text-pink-500">Team</a></li>
+            </ul> */}
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#about" className="text-white hover:text-gray-400">About Us</a>
+          <a href="#" className="text-white hover:text-gray-400">Home</a>
+          <a href="#team" className="text-white hover:text-gray-400">About Us</a>
           <a href="#features" className="text-white hover:text-gray-400">Features</a>
-          <a href="#pricing" className="text-white hover:text-gray-400">Pricing</a>
           <a href="#team" className="text-white hover:text-gray-400">Team</a>
-          <a href="#contact" className="text-white hover:text-gray-400">Contact</a>
         </div>
 
         {/* Auth Button */}
