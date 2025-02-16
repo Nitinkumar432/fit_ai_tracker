@@ -24,8 +24,8 @@ function App() {
           {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/dashboard" element={<Dashboard/>} />
 
-          <Route path="/dashboard" element={<Dashboard/>} />
-          <Route element={<ProtectedRoute />}>
+          {/* <Route path="/dashboard" element={<Dashboard/>} /> */}
+          {/* <Route element={<ProtectedRoute />}> */}
             
 
             <Route path="/pushups" element={<PushupCounter />} />

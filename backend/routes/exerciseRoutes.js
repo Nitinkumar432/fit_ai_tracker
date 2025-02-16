@@ -1,20 +1,33 @@
 import express from "express";
 import Exercise from "../Models/exercisesschema.js";
 import User from "../Models/UserSchema.js";
+import authenticateUser from "../middleware/authMiddleware.js"; // ✅ Correct default import
+import cookieParser from "cookie-parser";
 
 const router = express.Router();
 
 // 🔹 Add an Exercise
-router.post("/add", async (req, res) => {
+router.post("/add", authenticateUser, async (req, res) => {
+    console.log(req.body);
     try {
-        const { userId, type, count, duration, intensityLevel, caloriesBurned, notes } = req.body;
-
-      
-        const userExists = await User.findById(userId);
+        const { email, type, count, duration, notes } = req.body;
+        // ✅ Check if user exists
+        const userExists = await User.findOne({ email: email });
         if (!userExists) return res.status(404).json({ message: "User not found" });
+        // ✅ Calculate Intensity Level Based on Count
+        let intensityLevel = "Medium"; // Default
+        if (count < 20) {
+            intensityLevel = "Low";
+        } else if (count > 50) {
+            intensityLevel = "High";
+        }
 
+        // ✅ Calculate Calories Burned
+        const caloriesBurned = Math.round((count * duration) / 10); // Example formula
+
+        // ✅ Save Exercise Data
         const exercise = new Exercise({
-            userId,
+            email,
             type,
             count,
             duration,
@@ -27,9 +40,11 @@ router.post("/add", async (req, res) => {
         res.status(201).json({ message: "Exercise logged successfully", exercise });
 
     } catch (error) {
+        console.error("❌ Error Saving Exercise:", error);
         res.status(500).json({ message: "Server Error", error });
     }
 });
+
 
 // 🔹 Get Exercises of a User (Sorted by Timestamp)
 router.get("/:userId", async (req, res) => {

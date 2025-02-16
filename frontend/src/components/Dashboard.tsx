@@ -15,6 +15,9 @@ export default function Dashboard() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [userProfile, setUserProfile] = useState(null)
+
+  const backendUrl = "http://localhost:5000"
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,6 +31,28 @@ export default function Dashboard() {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
+
+  const fetchProfileData = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/auth/profile`, {
+        method: "GET",
+        credentials: "include", // Include cookies in the request
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile data")
+      }
+
+      const data = await response.json()
+      setUserProfile(data)
+    } catch (error) {
+      console.error("Error fetching profile data:", error)
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("token")
@@ -143,7 +168,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            <UserLevelCard />
+            <UserLevelCard userProfile={userProfile} />
           </motion.div>
 
           {/* Middle Section */}
@@ -190,4 +215,3 @@ export default function Dashboard() {
     </div>
   )
 }
-
