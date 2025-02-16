@@ -5,13 +5,13 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import exerciseRoutes from "./routes/exerciseRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
-
+import cookieParser from "cookie-parser";
 dotenv.config(); // Load environment variables
 
 const app = express();
-
+app.use(cookieParser());
 // ✅ Ensure correct middleware order
-app.use(cors({ origin: process.env.VITE_URL || "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: process.env.VITE_URL || "http://localhost:5174", credentials: true }));
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));  
 
@@ -29,7 +29,7 @@ app.get("/", (req, res) => res.status(200).json({ message: "🚀 API is running!
 
 // API Routes
 app.use("/auth", authRoutes);
-app.use("/exercise", exerciseRoutes);
+app.use("/excercise", exerciseRoutes);
 app.use("/leaderboard", leaderboardRoutes);
 
 // Handle Undefined Routes
@@ -45,5 +45,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🔗 Connected to Frontend at: ${process.env.VITE_URL || "http://localhost:5173"}`);
+    console.log(`🔗 Connected to Frontend at: ${process.env.VITE_URL || "http://localhost:5174"}`);
 });

@@ -2,15 +2,17 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../Models/UserSchema.js";
-import { ensureAuthenticated, preventAuthAccess } from "../middleware/authmiddleware.js";
+import authenticateUser from "../middleware/authMiddleware.js"; // ✅ Correct default import
+import cookieParser from "cookie-parser";
 
 const router = express.Router(); 
+router.use(cookieParser());
 // ✅ Ensure JSON body is parsed correctly
 router.post("/register", async (req, res) => {
     console.log("Request Body:", req.body); 
 
     try {
-        const { name, email, password, age, gender, height, weight, fitnessLevel, goal, activityPreferences } = req.body;
+        const { name, email, password, age, gender, height, weight } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ message: "Email and password are required" });
@@ -19,7 +21,7 @@ router.post("/register", async (req, res) => {
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ message: "User already exists" });
 
-        user = new User({ name, email, password, age, gender, height, weight, fitnessLevel, goal, activityPreferences });
+        user = new User({ name, email, password, age, gender, height, weight });
         await user.save();
 
         res.status(201).json({ message: "User registered successfully" });
@@ -33,7 +35,7 @@ router.post("/register", async (req, res) => {
 
 // User Login
 router.post("/login", async (req, res) => {
-    console.log("login route",req.body);
+    console.log("login route", req.body);
 
     try {
         const { email, password } = req.body;
@@ -47,9 +49,16 @@ router.post("/login", async (req, res) => {
         user.lastLogin = new Date(); // Update last login
         await user.save();
 
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        // Generate JWT token
+        const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-        res.json({ token, user });
+        // Set HTTP-Only Cookie with Token
+        res.cookie("authToken", token, {
+            secure:false,
+            maxAge: 3600000, // 1 hour expiration
+        });
+
+        res.json({ message: "Login successful", user });
     } catch (error) {
         res.status(500).json({ message: "Server Error", error });
     }
@@ -69,24 +78,29 @@ const authMiddleware = (req, res, next) => {
     }
 };
 // preventing to access 
-router.get("/login", preventAuthAccess, (req, res) => {
-    res.json({ message: "Please log in to continue." });
-});
+// router.get("/login", preventAuthAccess, (req, res) => {
+//     res.json({ message: "Please log in to continue." });
+// });
 
-router.get("/register", preventAuthAccess, (req, res) => {
-    res.json({ message: "Create an account to get started." });
-});
+// router.get("/register", preventAuthAccess, (req, res) => {
+//     res.json({ message: "Create an account to get started." });
+// });
 
 // Fetch User Profile
-router.get("/profile", authMiddleware, async (req, res) => {
+router.get("/profile", authenticateUser, async (req, res) => {
+    console.log(req.user.email);
     try {
-        const user = await User.findById(req.user.userId).select("-password");
+        // ✅ Fetch user using email instead of userId
+        const user = await User.findOne({ email: req.user.email }).select("-password");
+        
         if (!user) return res.status(404).json({ message: "User not found" });
 
         res.json(user);
     } catch (error) {
+        console.error("❌ Error Fetching Profile:", error);
         res.status(500).json({ message: "Server Error", error });
     }
 });
+
 
 export default router;

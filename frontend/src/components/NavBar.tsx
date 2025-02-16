@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -7,6 +5,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +14,16 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
 
   return (
     <nav
@@ -39,12 +48,19 @@ const Navbar = () => {
           <a href="#contact" className="hover:text-gray-600">Contact</a>
         </div>
 
-        {/* Sign Up Button (Desktop) */}
-        <Link to="/auth" className="hidden md:block px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition">
-          Sign Up/Login
-        </Link>
-        
-        
+        {/* Auth Button */}
+        {isAuthenticated ? (
+          <button
+            onClick={handleLogout}
+            className="hidden md:block px-6 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link to="/auth" className="hidden md:block px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition">
+            Sign Up/Login
+          </Link>
+        )}
 
         {/* Mobile Menu Button */}
         <button
@@ -63,13 +79,21 @@ const Navbar = () => {
           <a href="#pricing" className="text-lg font-medium">Pricing</a>
           <a href="#team" className="text-lg font-medium">Team</a>
           <a href="#contact" className="text-lg font-medium">Contact</a>
-          <Link
-            to="/auth"
-            className="px-5 py-2 bg-black text-white rounded-full font-medium"
-          >
-            Sign Up/Log In
-          </Link>
-          
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="px-5 py-2 bg-red-500 text-white rounded-full font-medium"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/auth"
+              className="px-5 py-2 bg-black text-white rounded-full font-medium"
+            >
+              Sign Up/Log In
+            </Link>
+          )}
         </div>
       )}
     </nav>

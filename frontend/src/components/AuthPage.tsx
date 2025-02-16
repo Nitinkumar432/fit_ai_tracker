@@ -6,7 +6,9 @@ import { useState } from "react"
 import { z } from "zod"
 import axios from "axios"
 import img3 from "../assets/main-app-preview.png"
-import { useNavigate } from "react-router-dom" 
+import { useNavigate } from "react-router-dom"
+// ye bad me dekhenge
+const backendUrl = "http://localhost:5000";
 
 // Define Zod schemas for form validation
 const signUpSchema = z.object({
@@ -45,29 +47,33 @@ export default function AuthPage() {
     weight: 0,
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isLoading, setIsLoading] = useState(false) // Loading state
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-  
+    setIsLoading(true)
+
     try {
       // Validate login form data
       loginSchema.parse(loginData)
       setErrors({})
-  
+
       // Handle login using Axios
-      const response = await axios.post("/api/login", loginData, {
+      const response = await axios.post(`${backendUrl}/auth/login`, loginData, {
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
-      })
-  
+        withCredentials: true, // ✅ Required for cookies to be stored in the browser
+    });
+    
+
       // Store the token in localStorage
       const { token } = response.data
       localStorage.setItem("token", token)
-  
+
       console.log("Login successful:", response.data)
       // Redirect to dashboard
-      navigate("/dashboard") // Use navigate to redirect
+      navigate("/dashboard")
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Handle validation errors
@@ -85,11 +91,14 @@ export default function AuthPage() {
       } else {
         console.error("Error during login:", error)
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
 
     try {
       // Validate sign-up form data
@@ -97,14 +106,15 @@ export default function AuthPage() {
       setErrors({})
 
       // Handle sign-up using Axios
-      const response = await axios.post("/api/signup", signUpData, {
+      const response = await axios.post(`${backendUrl}/auth/register`, signUpData, {
         headers: {
           "Content-Type": "application/json",
         },
       })
 
       console.log("SignUp successful:", response.data)
-      // Redirect or handle successful sign-up
+      // Redirect to dashboard after successful signup
+      navigate("/dashboard")
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Handle validation errors
@@ -122,6 +132,8 @@ export default function AuthPage() {
       } else {
         console.error("Error during sign-up:", error)
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -213,9 +225,10 @@ export default function AuthPage() {
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-blue-600 to-pink-600 text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-all"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-blue-600 to-pink-600 text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-all disabled:opacity-50"
               >
-                Log In
+                {isLoading ? "Logging in..." : "Log In"}
               </motion.button>
             </form>
           ) : (
@@ -363,9 +376,10 @@ export default function AuthPage() {
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-blue-600 to-pink-600 text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-all"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-blue-600 to-pink-600 text-white font-semibold py-4 rounded-lg hover:opacity-90 transition-all disabled:opacity-50"
               >
-                Create Account
+                {isLoading ? "Creating Account..." : "Create Account"}
               </motion.button>
             </form>
           )}

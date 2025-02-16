@@ -6,11 +6,11 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     age: { type: Number, required: true },
-    gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
-    height: { type: Number, required: true }, // in cm
-    weight: { type: Number, required: true }, // in kg
+    gender: { type: String, enum: ["male", "female", "other"], required: true },
+    height: { type: Number }, // in cm
+    weight: { type: Number}, // in kg
     fitnessLevel: { type: String, enum: ["Beginner", "Intermediate", "Advanced"], default: "Beginner" },
-    goal: { type: String, enum: ["Weight Loss", "Muscle Gain", "Endurance", "General Fitness"], required: true },
+    goal: { type: String, enum: ["Weight Loss", "Muscle Gain", "Endurance", "General Fitness"] },
     activityPreferences: [{ type: String }], // e.g., ["Pushups", "Running", "Yoga"]
     workoutHistory: [
         {
