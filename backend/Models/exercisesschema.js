@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const exerciseSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    email: { type: String, required:true },
     type: { type: String, required: true }, // "Pushup", "Squat", "Jump", etc.
     count: { type: Number, default: 0 }, // Repetitions (for exercises like pushups)
     duration: { type: Number, default: 0 }, // in seconds (for time-based exercises)
