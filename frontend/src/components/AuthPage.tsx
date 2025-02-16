@@ -61,9 +61,11 @@ export default function AuthPage() {
       // Handle login using Axios
       const response = await axios.post(`${backendUrl}/auth/login`, loginData, {
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
-      })
+        withCredentials: true, // ✅ Required for cookies to be stored in the browser
+    });
+    
 
       // Store the token in localStorage
       const { token } = response.data
