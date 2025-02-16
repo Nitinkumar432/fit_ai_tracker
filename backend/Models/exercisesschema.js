@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+
 const exerciseSchema = new mongoose.Schema({
-    email: { type: String, required:true },
+    email: { type: String, required: true },
     type: { type: String, required: true }, // "Pushup", "Squat", "Jump", etc.
     count: { type: Number, default: 0 }, // Repetitions (for exercises like pushups)
     duration: { type: Number, default: 0 }, // in seconds (for time-based exercises)
@@ -10,5 +11,7 @@ const exerciseSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now }
 });
 
-const Exercise = mongoose.model("Exercise", exerciseSchema);
+// ✅ Prevent Overwriting Model
+const Exercise = mongoose.models.Exercise || mongoose.model("Exercise", exerciseSchema);
+
 export default Exercise;

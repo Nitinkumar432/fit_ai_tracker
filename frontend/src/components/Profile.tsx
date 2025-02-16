@@ -4,23 +4,41 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useNavigate } from "react-router-dom"
 import { Home, Dumbbell, Book, User, LogOut, Menu, X } from "lucide-react"
+import AllExercises from "./Allexcercise" // Import the AllExercises component
 
 export default function Profile() {
   const navigate = useNavigate()
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [userProfile, setUserProfile] = useState<any>(null) // State to store user profile data
 
-  const userData = {
-    name: "P",
-    lexel: "0 / 150",
-    birthday: "February 15, 2005",
-    goal: "Lose Weight & Burn Fat",
-    intensity: "Quite intense",
-    exerciseDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    history: []
-  };
+  const backendUrl = "http://localhost:5000"
 
+  // Fetch user profile data from the backend
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch(`${backendUrl}/auth/profile`, {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data")
+        }
+
+        const data = await response.json()
+        setUserProfile(data) // Set the user profile data
+      } catch (error) {
+        console.error("Error fetching profile data:", error)
+      }
+    }
+
+    fetchProfileData()
+  }, [])
+
+  // Handle window resize for mobile/desktop view
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024)
@@ -83,6 +101,23 @@ export default function Profile() {
     </div>
   )
 
+  // Default user data if profile is not loaded yet
+  const userData = {
+    name: userProfile?.name || "Loading...",
+    email: userProfile?.email || "Not set",
+    age: userProfile?.age || "Not set",
+    gender: userProfile?.gender || "Not set",
+    height: userProfile?.height ? `${userProfile.height} cm` : "Not set",
+    weight: userProfile?.weight ? `${userProfile.weight} kg` : "Not set",
+    fitnessLevel: userProfile?.fitnessLevel || "Not set",
+    goal: userProfile?.goal || "Not set",
+    activityPreferences: userProfile?.activityPreferences?.join(", ") || "Not set",
+    streak: userProfile?.streak || 0,
+    lastLogin: userProfile?.lastLogin
+      ? new Date(userProfile.lastLogin).toLocaleDateString()
+      : "Not set",
+  }
+
   return (
     <div className="flex min-h-screen bg-black">
       {/* Mobile Menu Button */}
@@ -136,12 +171,28 @@ export default function Profile() {
             <h1 className="text-4xl font-bold text-cyan-400 mb-4">{userData.name}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="bg-gray-700 p-4 rounded-lg">
-                <p className="text-gray-400 text-sm">Lexel</p>
-                <p className="text-2xl font-bold text-gray-100">{userData.lexel}</p>
+                <p className="text-gray-400 text-sm">Email</p>
+                <p className="text-xl text-gray-100">{userData.email}</p>
               </div>
               <div className="bg-gray-700 p-4 rounded-lg">
-                <p className="text-gray-400 text-sm">Birthday</p>
-                <p className="text-xl text-gray-100">{userData.birthday}</p>
+                <p className="text-gray-400 text-sm">Age</p>
+                <p className="text-xl text-gray-100">{userData.age}</p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-400 text-sm">Gender</p>
+                <p className="text-xl text-gray-100">{userData.gender}</p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-400 text-sm">Height</p>
+                <p className="text-xl text-gray-100">{userData.height}</p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-400 text-sm">Weight</p>
+                <p className="text-xl text-gray-100">{userData.weight}</p>
+              </div>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-400 text-sm">Fitness Level</p>
+                <p className="text-xl text-gray-100">{userData.fitnessLevel}</p>
               </div>
             </div>
           </div>
@@ -154,29 +205,37 @@ export default function Profile() {
                 <p className="text-gray-100 text-lg">{userData.goal}</p>
               </div>
             </div>
-            
+
             <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-              <h2 className="text-2xl font-bold text-cyan-400 mb-4">Exercise Plan</h2>
-              <div className="bg-gray-700 p-4 rounded-lg space-y-2">
-                <p className="text-gray-100">
-                  <span className="text-gray-400">Intensity:</span> {userData.intensity}
-                </p>
-                <p className="text-gray-100">
-                  <span className="text-gray-400">Days:</span> {userData.exerciseDays.join(", ")}
-                </p>
+              <h2 className="text-2xl font-bold text-cyan-400 mb-4">Activity Preferences</h2>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-100 text-lg">{userData.activityPreferences}</p>
               </div>
             </div>
           </div>
 
-          {/* History Section */}
+          {/* Streak & Last Login */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+              <h2 className="text-2xl font-bold text-cyan-400 mb-4">Streak</h2>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-100 text-lg">{userData.streak} days</p>
+              </div>
+            </div>
+
+            <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+              <h2 className="text-2xl font-bold text-cyan-400 mb-4">Last Login</h2>
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <p className="text-gray-100 text-lg">{userData.lastLogin}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* All Exercises */}
           <div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
-            <h2 className="text-2xl font-bold text-cyan-400 mb-4">Activity History</h2>
-            <div className="bg-gray-700 p-4 rounded-lg min-h-[200px] flex items-center justify-center">
-              {userData.history.length === 0 ? (
-                <p className="text-gray-400 text-lg">No history to show...</p>
-              ) : (
-                <div className="text-gray-100">History items will appear here</div>
-              )}
+            <h2 className="text-2xl font-bold text-cyan-400 mb-4">Exercise History</h2>
+            <div className="bg-gray-700 p-4 rounded-lg">
+              <AllExercises /> {/* Use the AllExercises component here */}
             </div>
           </div>
         </motion.div>

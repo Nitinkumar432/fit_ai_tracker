@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Exercise from "../Models/exercisesschema.js";
 import User from "../Models/UserSchema.js";
 import authenticateUser from "../middleware/authMiddleware.js"; // ✅ Correct default import
 import cookieParser from "cookie-parser";
@@ -101,6 +102,24 @@ router.get("/profile", authenticateUser, async (req, res) => {
         res.status(500).json({ message: "Server Error", error });
     }
 });
+router.get("/allExercises",authenticateUser, async (req, res) => {
+    console.log("called");
+    console.log(req.user.email); // Log the user's email for debugging
 
+    try {
+        // ✅ Fetch exercises using the authenticated user's email
+        const exercises = await Exercise.find({ email: req.user.email });
+
+        if (exercises.length === 0) {
+            return res.status(404).json({ message: "No exercises found for this user" });
+        }
+
+        // Send all exercise data back
+        res.status(200).json(exercises);
+    } catch (error) {
+        console.error("❌ Error Fetching Exercises:", error);
+        res.status(500).json({ message: "Server Error", error });
+    }
+});
 
 export default router;
