@@ -1,6 +1,7 @@
 import express from "express";
 import Exercise from "../Models/exercisesschema.js";
 import User from "../Models/UserSchema.js";
+import UsExcerer from "../Models/UserSchema.js";
 import authenticateUser from "../middleware/authMiddleware.js"; // ✅ Correct default import
 import cookieParser from "cookie-parser";
 
@@ -82,6 +83,26 @@ router.get("/:userId", async (req, res) => {
         const exercises = await Exercise.find({ userId: req.params.userId }).sort({ timestamp: -1 });
         res.json(exercises);
     } catch (error) {
+        res.status(500).json({ message: "Server Error", error });
+    }
+});
+// all excercise
+router.get("/allExercises", async (req, res) => {
+    console.log("called");
+    // console.log(req.user.email); // Log the user's email for debugging
+
+    try {
+        // ✅ Fetch exercises using the authenticated user's email
+        const exercises = await Exercise.find({ email: req.user.email });
+
+        if (exercises.length === 0) {
+            return res.status(404).json({ message: "No exercises found for this user" });
+        }
+
+        // Send all exercise data back
+        res.status(200).json("hello",exercises);
+    } catch (error) {
+        console.error("❌ Error Fetching Exercises:", error);
         res.status(500).json({ message: "Server Error", error });
     }
 });

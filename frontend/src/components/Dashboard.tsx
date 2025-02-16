@@ -147,7 +147,7 @@ export default function Dashboard() {
           {/* Middle Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <motion.div className="bg-gray-800 shadow-xl rounded-xl p-6">
-              <StreakTracker />
+              <StreakTracker  userProfile={userProfile} />
             </motion.div>
             <motion.div className="bg-gray-800 shadow-xl rounded-xl p-6">
               <WallOfFame />
