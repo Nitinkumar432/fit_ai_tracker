@@ -7,6 +7,7 @@ import { z } from "zod"
 import axios from "axios"
 import img3 from "../assets/main-app-preview.png"
 import { useNavigate } from "react-router-dom"
+import Cookie from "js-cookie"
 // ye bad me dekhenge
 
 const backendUrl = "http://localhost:5000";
@@ -51,51 +52,97 @@ export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false) // Loading state
 
   const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
+    e.preventDefault();
+    setIsLoading(true);
+  
     try {
       // Validate login form data
-      loginSchema.parse(loginData)
-      setErrors({})
-
-      // Handle login using Axios
+      loginSchema.parse(loginData);
+      setErrors({});
+  
       const response = await axios.post(`${backendUrl}/auth/login`, loginData, {
         headers: {
-            "Content-Type": "application/json",
+          "Content-Type": "application/json",
         },
-        withCredentials: true, // ✅ Required for cookies to be stored in the browser
-    });
-    
-
-      // Store the token in localStorage
-      const { token } = response.data
-      localStorage.setItem("token", token)
-
-      console.log("Login successful:", response.data)
-      // Redirect to dashboard
-      navigate("/dashboard")
+        withCredentials: true, // ✅ Ensures cookies are sent & received
+      });
+      
+      if (response.status === 200) {
+        console.log("Login successful");
+        console.log("Navigating to dashboard...");
+        navigate("/dashboard");
+      } else {
+        console.error("Unexpected response:", response);
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Handle validation errors
-        const validationErrors: Record<string, string> = {}
+        const validationErrors: Record<string, string> = {};
         error.errors.forEach((err) => {
           if (err.path) {
-            validationErrors[err.path[0]] = err.message
+            validationErrors[err.path[0]] = err.message;
           }
-        })
-        setErrors(validationErrors)
+        });
+        setErrors(validationErrors);
       } else if (axios.isAxiosError(error)) {
         // Handle Axios errors
-        console.error("Axios error:", error.response?.data || error.message)
-        setErrors({ server: error.response?.data?.message || "Login failed. Please try again." })
+        console.error("Axios error:", error.response?.data || error.message);
+        setErrors({ server: error.response?.data?.message || "Login failed. Please try again." });
       } else {
-        console.error("Error during login:", error)
+        console.error("Error during login:", error);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+  
+
+  // const handleLoginSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   setIsLoading(true)
+
+  //   try {
+  //     // Validate login form data
+  //     loginSchema.parse(loginData)
+  //     setErrors({})
+
+  //     // Handle login using Axios
+  //     const response = await axios.post(`${backendUrl}/auth/login`, loginData, {
+  //       headers: {
+  //           "Content-Type": "application/json",
+  //       },
+  //       withCredentials: true, // ✅ Required for cookies to be stored in the browser
+  //   });
+    
+
+  //     // Store the token in localStorage
+  //     const { token } = response.data
+  //     localStorage.setItem("authToken", token)
+
+  //     console.log("Login successful:", response.data)
+  //     // Redirect to dashboard
+  //     navigate("/dashboard")
+  //   } catch (error) {
+  //     if (error instanceof z.ZodError) {
+  //       // Handle validation errors
+  //       const validationErrors: Record<string, string> = {}
+  //       error.errors.forEach((err) => {
+  //         if (err.path) {
+  //           validationErrors[err.path[0]] = err.message
+  //         }
+  //       })
+  //       setErrors(validationErrors)
+  //     } else if (axios.isAxiosError(error)) {
+  //       // Handle Axios errors
+  //       console.error("Axios error:", error.response?.data || error.message)
+  //       setErrors({ server: error.response?.data?.message || "Login failed. Please try again." })
+  //     } else {
+  //       console.error("Error during login:", error)
+  //     }
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
 
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
