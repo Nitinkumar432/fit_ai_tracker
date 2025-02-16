@@ -6,13 +6,42 @@ import cookieParser from "cookie-parser";
 
 const router = express.Router();
 
+const authenticateUser2 = (req, res, next) => {
+    // Extract token from cookies
+    const token = req.cookies.authToken; // Assuming the cookie is named "authToken"
+
+    if (!token) {
+        return res.status(401).json({ error: "Access Denied: No Token Provided" });
+    }
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded; // Attach user data to the request
+        x=req.user.email;
+
+        console.log("🟢 User Authenticated:", decoded); // Print user data to console
+
+
+        next(); // Proceed to the next middleware/route
+    } catch (err) {
+        console.error("🔴 Invalid Token Error:", err.message);
+        return res.status(403).json({ error: "Invalid Token" });
+    }
+};
+
 // 🔹 Add an Exercise
-router.post("/add", authenticateUser, async (req, res) => {
+router.post("/add",async (req, res) => {
+  
+    // console.log("current user name",req.user.email);
+    
     console.log(req.body);
     try {
+        
         const { email, type, count, duration, notes } = req.body;
+        
         // ✅ Check if user exists
-        const userExists = await User.findOne({ email: email });
+        const userExists = await User.findOne({ email:email });
         if (!userExists) return res.status(404).json({ message: "User not found" });
         // ✅ Calculate Intensity Level Based on Count
         let intensityLevel = "Medium"; // Default
@@ -35,6 +64,7 @@ router.post("/add", authenticateUser, async (req, res) => {
             caloriesBurned,
             notes,
         });
+        console.log(exercise);
 
         await exercise.save();
         res.status(201).json({ message: "Exercise logged successfully", exercise });
