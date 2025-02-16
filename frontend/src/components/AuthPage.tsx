@@ -8,6 +8,7 @@ import axios from "axios"
 import img3 from "../assets/main-app-preview.png"
 import { useNavigate } from "react-router-dom"
 // ye bad me dekhenge
+
 const backendUrl = "http://localhost:5000";
 
 // Define Zod schemas for form validation

@@ -1,3 +1,5 @@
+"use client";
+
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,8 +11,50 @@ const SquatCounter: React.FC = () => {
   const [count, setCount] = useState(0);
   const [isTracking, setIsTracking] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null); // State to store the user's email
+  const [duration, setDuration] = useState(0); // State to track exercise duration
+  const [isActive, setIsActive] = useState(false); // State to track if the timer is active
+  const timerRef = useRef<NodeJS.Timeout | null>(null); // Ref for the timer interval
   const positionRef = useRef<"up" | "down" | null>(null);
 
+  // Fetch user email when the component mounts
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/auth/profile", {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data");
+        }
+
+        const data = await response.json();
+        setUserEmail(data.email); // Set the user's email
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  // Timer logic
+  useEffect(() => {
+    if (isActive) {
+      timerRef.current = setInterval(() => {
+        setDuration((prev) => prev + 1);
+      }, 1000);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isActive]);
+
+  // Setup camera and pose detection
   useEffect(() => {
     let landmarker: PoseLandmarker | null = null;
     let animationFrameId: number;
@@ -81,6 +125,7 @@ const SquatCounter: React.FC = () => {
     };
   }, [isTracking]);
 
+  // Detect squat motion
   const detectSquat = (landmarks: any) => {
     const leftHip = landmarks[23];
     const rightHip = landmarks[24];
@@ -110,6 +155,7 @@ const SquatCounter: React.FC = () => {
     }
   };
 
+  // Draw landmarks on the canvas
   const drawCanvas = (ctx: CanvasRenderingContext2D, video: HTMLVideoElement, landmarks: any) => {
     ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
     ctx.drawImage(video, 0, 0, canvasRef.current!.width, canvasRef.current!.height);
@@ -119,24 +165,69 @@ const SquatCounter: React.FC = () => {
     drawingUtils.drawConnectors(landmarks, PoseLandmarker.POSE_CONNECTIONS, { color: "#10B981" });
   };
 
+  // Start tracking
   const startTracking = () => {
     setIsTracking(true);
+    setIsActive(true); // Start the timer
   };
 
+  // Stop tracking
   const stopTracking = () => {
     setIsTracking(false);
+    setIsActive(false); // Stop the timer
   };
 
+  // Reset all data
   const resetAll = () => {
     setCount(0);
+    setDuration(0);
     setIsTracking(false);
+    setIsActive(false);
     positionRef.current = null;
   };
 
-  const saveData = () => {
-    const data = { squats: count };
-    console.log("Saved Data:", data);
-    alert("Data saved successfully!");
+  // Save data to the backend
+  const saveData = async () => {
+    if (!userEmail) {
+      alert("You must be logged in to save data.");
+      return;
+    }
+
+    const data = {
+      email: userEmail, // Use the fetched email
+      type: "squat", // Type of exercise
+      count: count, // Number of squats
+      duration: duration, // Duration in seconds
+      notes: "Squat exercise completed", // Optional notes
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/excercise/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies in the request
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+        alert("Data saved successfully!");
+
+        // Reset squat count and duration after successful save
+        setCount(0);
+        setDuration(0);
+      } else {
+        const errorData = await response.json(); // Parse error response from the backend
+        console.error("Failed to save data:", errorData);
+        alert(`Failed to save data: ${errorData.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Error saving data. Check the console for details.");
+    }
   };
 
   return (
@@ -165,6 +256,14 @@ const SquatCounter: React.FC = () => {
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
                 {isTracking ? "Tracking Active" : "Tracking Inactive"}
+              </motion.p>
+              <motion.p
+                className="text-2xl text-green-600 mb-8"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                Duration: {duration}s
               </motion.p>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-8">

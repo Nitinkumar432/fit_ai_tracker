@@ -1,4 +1,3 @@
-
 import type React from "react"
 import { useEffect, useRef, useState } from "react"
 import { FilesetResolver, PoseLandmarker, DrawingUtils } from "@mediapipe/tasks-vision"
@@ -12,7 +11,32 @@ const ShoulderTapCounter: React.FC = () => {
   const [timer, setTimer] = useState(0)
   const [isActive, setIsActive] = useState(false)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
+  const [userEmail, setUserEmail] = useState<string | null>(null) // State to store the user's email
 
+  // Fetch the user's profile data (including email) when the component mounts
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/auth/profile", {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data")
+        }
+
+        const data = await response.json()
+        setUserEmail(data.email) // Set the user's email
+      } catch (error) {
+        console.error("Error fetching profile data:", error)
+      }
+    }
+
+    fetchProfileData()
+  }, [])
+
+  // Timer logic
   useEffect(() => {
     if (isActive) {
       timerRef.current = setInterval(() => {
@@ -26,6 +50,7 @@ const ShoulderTapCounter: React.FC = () => {
     }
   }, [isActive])
 
+  // Camera and pose detection setup
   useEffect(() => {
     let landmarker: PoseLandmarker | null = null
 
@@ -185,9 +210,47 @@ const ShoulderTapCounter: React.FC = () => {
     setCount(0)
   }
 
-  const handleSave = () => {
-    // Implement save functionality
-    console.log("Saving results:", { count, timer })
+  const handleSave = async () => {
+    if (!userEmail) {
+      alert("You must be logged in to save data.")
+      return
+    }
+
+    const data = {
+      email: userEmail, // Use the fetched email
+      type: "shoulder-tap", // Type of exercise
+      count: count, // Number of shoulder taps
+      duration: timer, // Timer in seconds
+      notes: "Shoulder tap exercise completed", // Optional notes
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/excercise/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies in the request
+        body: JSON.stringify(data),
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log("Data saved successfully:", result)
+        alert("Data saved successfully!")
+
+        // Reset count and timer after saving
+        setCount(0)
+        setTimer(0)
+      } else {
+        const errorData = await response.json() // Parse error response from the backend
+        console.error("Failed to save data:", errorData)
+        alert(`Failed to save data: ${errorData.message || response.statusText}`)
+      }
+    } catch (error) {
+      console.error("Error saving data:", error)
+      alert("Error saving data. Check the console for details.")
+    }
   }
 
   const handleTutorial = () => {
@@ -282,4 +345,3 @@ const ShoulderTapCounter: React.FC = () => {
 }
 
 export default ShoulderTapCounter
-

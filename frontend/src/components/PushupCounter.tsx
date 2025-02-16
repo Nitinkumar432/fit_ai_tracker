@@ -4,7 +4,6 @@ import type React from "react"
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { FilesetResolver, PoseLandmarker, DrawingUtils } from "@mediapipe/tasks-vision"
-
 const PushupCounter: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -14,6 +13,29 @@ const PushupCounter: React.FC = () => {
   const positionRef = useRef<"up" | "down" | null>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const [showTutorial, setShowTutorial] = useState(false)
+  const [userEmail, setUserEmail] = useState<string | null>(null) // State to store the user's email
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/auth/profile", {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data")
+        }
+
+        const data = await response.json()
+        setUserEmail(data.email) // Set the user's email
+      } catch (error) {
+        console.error("Error fetching profile data:", error)
+      }
+    }
+
+    fetchProfileData()
+  }, [])
+
 
   useEffect(() => {
     let landmarker: PoseLandmarker | null = null
@@ -112,7 +134,6 @@ const PushupCounter: React.FC = () => {
     }
   };
 
-
   const drawCanvas = (ctx: CanvasRenderingContext2D, video: HTMLVideoElement, landmarks: any) => {
     ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height)
     ctx.drawImage(video, 0, 0, canvasRef.current!.width, canvasRef.current!.height)
@@ -140,13 +161,48 @@ const PushupCounter: React.FC = () => {
     setIsRunning(false)
     if (intervalRef.current) clearInterval(intervalRef.current)
   }
-
-  const saveData = () => {
-    const data = { pushups: count, time: timer }
-    console.log("Saved Data:", data)
-    alert("Data saved successfully!")
-  }
-
+const saveData = async () => {
+    if (!userEmail) {
+      alert("You must be logged in to save data.");
+      return;
+    }
+  
+    const data = {
+      email: userEmail, // Use the fetched email
+      type: "pushup", // Type of exercise
+      count: count, // Number of push-ups
+      duration: timer, // Timer in seconds
+      notes: "Push-up exercise completed", // Optional notes
+    };
+  
+    try {
+      const response = await fetch("http://localhost:5000/excercise/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies in the request
+        body: JSON.stringify(data),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Data saved successfully:", result);
+        alert("Data saved successfully!");
+  
+        // Reset push count to 0 after successful save
+        setCount(0);
+      } else {
+        const errorData = await response.json(); // Parse error response from the backend
+        console.error("Failed to save data:", errorData);
+        alert(`Failed to save data: ${errorData.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error saving data:", error);
+      alert("Error saving data. Check the console for details.");
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-4 md:p-8">
       <div className="max-w-6xl mx-auto">

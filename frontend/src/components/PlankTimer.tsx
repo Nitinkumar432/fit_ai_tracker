@@ -16,7 +16,46 @@ const PlankTimer: React.FC = () => {
   const plankStartTime = useRef<number | null>(null)
   const [showTutorial, setShowTutorial] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [userEmail, setUserEmail] = useState<string | null>(null) // State to store the user's email
 
+  // Fetch the user's profile data (including email) when the component mounts
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/auth/profile", {
+          method: "GET",
+          credentials: "include", // Include cookies in the request
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile data")
+        }
+
+        const data = await response.json()
+        setUserEmail(data.email) // Set the user's email
+      } catch (error) {
+        console.error("Error fetching profile data:", error)
+      }
+    }
+
+    fetchProfileData()
+  }, [])
+
+  // Timer logic
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setPlankTime((prev) => prev + 1)
+      }, 1000)
+    } else if (intervalRef.current) {
+      clearInterval(intervalRef.current)
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [isRunning])
+
+  // Camera and pose detection setup
   useEffect(() => {
     let landmarker: PoseLandmarker | null = null
     let animationFrameId: number
@@ -162,10 +201,46 @@ const PlankTimer: React.FC = () => {
     plankStartTime.current = null
   }
 
-  const saveData = () => {
-    const data = { pushups: count, plankTime: plankTime }
-    console.log("Saved Data:", data)
-    alert("Data saved successfully!")
+  const saveData = async () => {
+    if (!userEmail) {
+      alert("You must be logged in to save data.")
+      return
+    }
+
+    const data = {
+      email: userEmail, // Use the fetched email
+      type: "plank", // Type of exercise
+      count: count, // Number of push-ups
+      duration: plankTime, // Plank time in seconds
+      notes: "Plank and push-up exercise completed", // Optional notes
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/excercise/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Include cookies in the request
+        body: JSON.stringify(data),
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log("Data saved successfully:", result)
+        alert("Data saved successfully!")
+
+        // Reset count and timer after saving
+        resetAll()
+      } else {
+        const errorData = await response.json() // Parse error response from the backend
+        console.error("Failed to save data:", errorData)
+        alert(`Failed to save data: ${errorData.message || response.statusText}`)
+      }
+    } catch (error) {
+      console.error("Error saving data:", error)
+      alert("Error saving data. Check the console for details.")
+    }
   }
 
   return (
@@ -272,4 +347,3 @@ const PlankTimer: React.FC = () => {
 }
 
 export default PlankTimer
-
