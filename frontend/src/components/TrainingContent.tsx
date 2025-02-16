@@ -15,19 +15,26 @@ export default function TrainingContent() {
 
   return (
     <div className="p-6 md:p-10 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6">Training Exercises</h2>
+      <h2 className="text-3xl font-bold text-gray-100 mb-6">Training Exercises</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
         {exercises.map((exercise, index) => (
           <motion.div
             key={exercise.name}
-            className="bg-white shadow-lg rounded-xl p-6 cursor-pointer hover:shadow-xl transition-all flex flex-col items-center text-center"
+            className="bg-gray-800 shadow-lg hover:shadow-gray-900/50 rounded-xl p-6 cursor-pointer border border-gray-700 hover:border-cyan-400 transition-all flex flex-col items-center text-center group"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             onClick={() => navigate(exercise.path)}
+            whileHover={{ scale: 1.03 }}
           >
-            <img src={exercise.gif} alt={exercise.name} className="w-full h-40 object-cover rounded-lg mb-4" />
-            <h3 className="text-xl font-semibold text-gray-800">{exercise.name}</h3>
+            <img 
+              src={exercise.gif} 
+              alt={exercise.name} 
+              className="w-full h-40 object-cover rounded-lg mb-4 border border-gray-700 group-hover:border-cyan-400 transition-colors"
+            />
+            <h3 className="text-xl font-semibold text-gray-100 group-hover:text-cyan-400 transition-colors">
+              {exercise.name}
+            </h3>
           </motion.div>
         ))}
       </div>

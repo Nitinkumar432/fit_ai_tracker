@@ -21,14 +21,14 @@ function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/auth" element={<Signup/>} />
 
-          <Route element={<ProtectedRoute />}>
+          {/* <Route element={<ProtectedRoute />}> */}
             <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/training" element={<Training />} />
             <Route path="/pushups" element={<PushupCounter />} />
             <Route path="/shoulder-taps" element={<ShoulderTapCounter />} />
             <Route path="/squats" element={<SquatCounter/>} />
             <Route path="/plank" element={<PlankTimer />} />
-          </Route>
+          {/* </Route> */}
         </Routes>
       </Layout>
       

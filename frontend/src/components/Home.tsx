@@ -2,6 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import img1 from "../assets/main-app-preview.png";
 import { Linkedin, Github } from "lucide-react";
+import img2 from "../assets/landingpage_features_image_1.png";
+import { useNavigate } from "react-router-dom";
 
 const teamMembers = [
   {
@@ -104,20 +106,10 @@ const features = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header Section */}
-      <header className="py-6 bg-black text-white shadow-md">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <nav>
-            <ul className="flex space-x-6">
-              <li><a href="#" className="hover:text-pink-500">Home</a></li>
-              <li><a href="#features" className="hover:text-pink-500">Features</a></li>
-              <li><a href="#team" className="hover:text-pink-500">Team</a></li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+      
 
       {/* Hero Section */}
       <section className="py-12 md:py-16 lg:py-20">
@@ -200,6 +192,51 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <section className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative"
+            >
+              <img src={img2} alt="Hero Image" className="w-full h-auto" />
+
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-blue-500/20 rounded-2xl" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="space-y-6"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+                Fit AI Trainer offers an{" "}
+                <span className="bg-gradient-to-r from-pink-500 to-blue-500 bg-clip-text text-transparent">
+                  effective fitness experience
+                </span>{" "}
+                without the worry of time and location constraints
+              </h2>
+              <p className="text-xl text-gray-600">
+                Transform your fitness journey with our AI-powered platform that adapts to your schedule and space. Get
+                professional guidance and real-time feedback, all from the comfort of your chosen location.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-black text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-800 transition-colors"
+                onClick={() => navigate('/auth')}
+              >
+                Start Your Journey
+              </motion.button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
         {/* Team Section */}
         <section id="team" className="py-12 text-center bg-black">

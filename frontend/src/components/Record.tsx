@@ -36,14 +36,16 @@ const Record: React.FC = () => {
   const data = dataMap[selectedTimeFrame];
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg max-w-lg mx-auto text-center">
-      <h2 className="text-xl font-bold mb-4">Record</h2>
+    <div className="bg-gray-800 p-6 rounded-xl shadow-xl border border-gray-700 max-w-lg mx-auto text-center">
+      <h2 className="text-xl font-bold mb-4 text-gray-200">Record</h2>
       <div className="flex gap-2 justify-center mb-4">
         {timeFrames.map((frame) => (
           <button
             key={frame}
-            className={`px-4 py-2 rounded-lg ${
-              selectedTimeFrame === frame ? "bg-green-500 text-white" : "bg-gray-200"
+            className={`px-4 py-2 rounded-lg transition-colors ${
+              selectedTimeFrame === frame 
+                ? "bg-gradient-to-r from-purple-400 to-cyan-400 text-gray-900"
+                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
             onClick={() => setSelectedTimeFrame(frame)}
           >
@@ -51,15 +53,35 @@ const Record: React.FC = () => {
           </button>
         ))}
       </div>
-      <div className="mt-6 p-4 bg-gray-100 rounded-lg shadow-md">
-        <h3 className="text-lg font-bold mb-2">Activity Progress</h3>
+      <div className="mt-6 p-4 bg-gray-900 rounded-lg shadow-inner">
+        <h3 className="text-lg font-bold mb-2 text-gray-300">Activity Progress</h3>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" strokeWidth={2} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+            <XAxis 
+              dataKey="day" 
+              stroke="#9CA3AF" 
+              tick={{ fill: '#9CA3AF' }} 
+            />
+            <YAxis 
+              stroke="#9CA3AF" 
+              tick={{ fill: '#9CA3AF' }} 
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: '#1f2937',
+                border: '1px solid #374151',
+                borderRadius: '8px'
+              }}
+              itemStyle={{ color: '#e5e7eb' }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="value" 
+              stroke="#22d3ee" 
+              strokeWidth={2}
+              dot={{ fill: '#22d3ee', strokeWidth: 2 }}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
