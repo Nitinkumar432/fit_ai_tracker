@@ -9,29 +9,29 @@ const teamMembers = [
       name: "Pratyush",
       role: "Project Manager / Full Stack Developer",
       image: "/images/yosuke.jpg", // Replace with actual image path
-      linkedin: "#",
-      github: "#",
+      linkedin: "https://www.linkedin.com/in/pratyush-kumar-05a071282/",
+      github: "https://github.com/PratyushSinha15",
     },
     {
       name: "Nitin",
       role: "Lead Developer / Full Stack Developer",
       image: "/images/vinicius.jpg",
-      linkedin: "#",
-      github: "#https://github.com/Nitinkumar432",
+      linkedin: "https://www.linkedin.com/in/nitin-patel-49360a257/",
+      github: "https://github.com/Nitinkumar432",
     },
     {
       name: "Omil",
       role: "Full Stack Developer",
       image: "/images/cocoy.jpg",
-      linkedin: "#",
+      linkedin: "https://www.linkedin.com/in/omil-goel-0733042b3/",
       github: "https://github.com/",
     },
     {
       name: "Nikhar ",
       role: "Full Stack Developer",
       image: "/images/terumasa.jpg",
-      linkedin: "#",
-      github: "#",
+      linkedin: "https://www.linkedin.com/in/nikhar-raj/",
+      github: "https://github.com/rajnikhar",
     },
   ];
 const features = [
