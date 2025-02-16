@@ -154,8 +154,8 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-pink-50 flex items-center justify-center">
-      <div className="grid md:grid-cols-2 gap-2 w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="grid md:grid-cols-2 gap-2 w-full max-w-6xl bg-black rounded-2xl shadow-2xl overflow-hidden">
         {/* Form Section */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -169,8 +169,8 @@ export default function AuthPage() {
             </h1>
             <p className="text-gray-600">
               {isLogin
-                ? "Log in to continue your fitness journey with BodyBuddy"
-                : "Join BodyBuddy and get personalized AI-powered workouts"}
+                ? "Log in to continue your fitness journey with Fit AI Trainer"
+                : "Join Fit AI Trainer and get personalized AI-powered workouts"}
             </p>
           </div>
 
@@ -397,7 +397,7 @@ export default function AuthPage() {
           <div className="absolute bottom-0 left-0 right-0 p-8 text-white bg-gradient-to-t from-black/60 to-transparent">
             <h2 className="text-2xl font-bold mb-2">Transform Your Life</h2>
             <p className="text-sm opacity-90">
-              Join thousands of others who have already started their fitness journey with BodyBuddy
+              Join thousands of others who have already started their fitness journey with Fit AI Trainer
             </p>
           </div>
         </motion.div>
