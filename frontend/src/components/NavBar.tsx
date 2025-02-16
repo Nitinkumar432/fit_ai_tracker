@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,12 +17,19 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+    const checkAuth = () => {
+      const token = Cookies.get("authToken");
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth(); // Check on mount
+    const interval = setInterval(checkAuth, 1000); // Check every second
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("authToken");
     setIsAuthenticated(false);
   };
 
@@ -39,11 +47,6 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* <ul className="flex space-x-6">
-              <li><a href="#" className="hover:text-pink-500">Home</a></li>
-              <li><a href="#features" className="hover:text-pink-500">Features</a></li>
-              <li><a href="#team" className="hover:text-pink-500">Team</a></li>
-            </ul> */}
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
           <a href="#" className="text-white hover:text-gray-400">Home</a>
@@ -61,7 +64,10 @@ const Navbar = () => {
             Logout
           </button>
         ) : (
-          <Link to="/auth" className="hidden md:block px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition">
+          <Link
+            to="/auth"
+            className="hidden md:block px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition"
+          >
             Sign Up/Login
           </Link>
         )}

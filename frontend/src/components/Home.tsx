@@ -4,12 +4,13 @@ import img1 from "../assets/main-app-preview.png";
 import { Linkedin, Github } from "lucide-react";
 import img2 from "../assets/landingpage_features_image_1.png";
 import { useNavigate } from "react-router-dom";
+import pratyushImg from "../assets/1726505628182.jpeg";
 
 const teamMembers = [
   {
     name: "Pratyush",
     role: "Project Manager / Full Stack Developer",
-    image: "/images/yosuke.jpg",
+    image: "../assets/1726505628182.jpeg",
     linkedin: "https://www.linkedin.com/in/pratyush-kumar-05a071282/",
     github: "https://github.com/PratyushSinha15",
   },
