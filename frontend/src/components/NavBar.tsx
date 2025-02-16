@@ -27,8 +27,8 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 border-b border-gray-200 transition-all ${
-        isScrolled ? "bg-white shadow-md" : "bg-white/80 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-50 border-b border-gray-800 transition-all ${
+        isScrolled ? "bg-black shadow-md" : "bg-black shadow-md"
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
@@ -41,11 +41,11 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#about" className="hover:text-gray-600">About Us</a>
-          <a href="#features" className="hover:text-gray-600">Features</a>
-          <a href="#pricing" className="hover:text-gray-600">Pricing</a>
-          <a href="#team" className="hover:text-gray-600">Team</a>
-          <a href="#contact" className="hover:text-gray-600">Contact</a>
+          <a href="#about" className="text-white hover:text-gray-400">About Us</a>
+          <a href="#features" className="text-white hover:text-gray-400">Features</a>
+          <a href="#pricing" className="text-white hover:text-gray-400">Pricing</a>
+          <a href="#team" className="text-white hover:text-gray-400">Team</a>
+          <a href="#contact" className="text-white hover:text-gray-400">Contact</a>
         </div>
 
         {/* Auth Button */}
@@ -65,7 +65,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-gray-600"
+          className="md:hidden p-2 text-white"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -73,12 +73,12 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden flex flex-col items-center space-y-4 py-4 bg-white border-t border-gray-200">
-          <a href="#about" className="text-lg font-medium">About Us</a>
-          <a href="#features" className="text-lg font-medium">Features</a>
-          <a href="#pricing" className="text-lg font-medium">Pricing</a>
-          <a href="#team" className="text-lg font-medium">Team</a>
-          <a href="#contact" className="text-lg font-medium">Contact</a>
+        <div className="md:hidden flex flex-col items-center space-y-4 py-4 bg-black border-t border-gray-800">
+          <a href="#about" className="text-lg font-medium text-white">About Us</a>
+          <a href="#features" className="text-lg font-medium text-white">Features</a>
+          <a href="#pricing" className="text-lg font-medium text-white">Pricing</a>
+          <a href="#team" className="text-lg font-medium text-white">Team</a>
+          <a href="#contact" className="text-lg font-medium text-white">Contact</a>
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
