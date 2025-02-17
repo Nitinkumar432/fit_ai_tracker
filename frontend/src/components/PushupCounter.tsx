@@ -222,14 +222,14 @@ const saveData = async () => {
               >
                 Push-ups: {count}
               </motion.h2>
-              <motion.p
+              {/* <motion.p
                 className="text-3xl text-purple-600 mb-8"
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
                 Timer: {timer}s
-              </motion.p>
+              </motion.p> */}
             </div>
             <div className="grid grid-cols-2 gap-4 mt-8">
               <motion.button
