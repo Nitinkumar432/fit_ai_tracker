@@ -298,7 +298,7 @@ const ShoulderTapCounter: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <h2 className="text-3xl font-bold text-blue-600">Shoulder-taps: {count}</h2>
-            <p className="text-2xl text-purple-600 mt-2">Timer: {timer}s</p>
+            {/* <p className="text-2xl text-purple-600 mt-2">Timer: {timer}s</p> */}
           </motion.div>
 
           <div className="grid grid-cols-2 gap-4">

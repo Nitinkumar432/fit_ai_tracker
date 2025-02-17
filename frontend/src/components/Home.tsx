@@ -4,34 +4,33 @@ import img1 from "../assets/main-app-preview.png";
 import { Linkedin, Github } from "lucide-react";
 import img2 from "../assets/landingpage_features_image_1.png";
 import { useNavigate } from "react-router-dom";
-import pratyushImg from "../assets/1726505628182.jpeg";
 
 const teamMembers = [
   {
     name: "Pratyush",
     role: "Project Manager / Full Stack Developer",
-    image: "../assets/1726505628182.jpeg",
+    image: "./src/assets/pratyush.jpeg",
     linkedin: "https://www.linkedin.com/in/pratyush-kumar-05a071282/",
     github: "https://github.com/PratyushSinha15",
   },
   {
     name: "Nitin",
     role: "Lead Developer / Full Stack Developer",
-    image: "/images/vinicius.jpg",
+    image: "./src/assets/Patel.jpg",
     linkedin: "https://www.linkedin.com/in/nitin-patel-49360a257/",
     github: "https://github.com/Nitinkumar432",
   },
   {
     name: "Omil",
     role: "Full Stack Developer",
-    image: "/images/cocoy.jpg",
+    image: "./src/assets/Omil.jpg",
     linkedin: "https://www.linkedin.com/in/omil-goel-0733042b3/",
     github: "https://github.com/",
   },
   {
     name: "Nikhar ",
     role: "Full Stack Developer",
-    image: "/images/terumasa.jpg",
+    image: "./src/assets/Nikk.jpg",
     linkedin: "https://www.linkedin.com/in/nikhar-raj/",
     github: "https://github.com/rajnikhar",
   },

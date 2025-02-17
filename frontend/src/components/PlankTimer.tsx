@@ -262,14 +262,14 @@ const PlankTimer: React.FC = () => {
               >
                 Plank Time: {plankTime}s
               </motion.h2>
-              <motion.p
-                className="text-3xl text-green-600 mb-8"
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              >
-                Push-ups: {count}
-              </motion.p>
+                {/* <motion.p
+                  className="text-3xl text-green-600 mb-8"
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  Push-ups: {count}
+                </motion.p> */}
               <motion.div
                 className={`text-xl font-semibold ${isPlankActive ? "text-green-500" : "text-red-500"}`}
                 animate={{ opacity: [0.5, 1] }}
